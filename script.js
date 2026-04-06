@@ -1,7 +1,7 @@
 // --- KONFIGURASI SISTEM ---
-// PERHATIAN: Masukkan URL Google Script (Web App) anda yang terkini di bawah
+// Gantikan ini dengan Web App URL dari Google Apps Script Tuan
 const scriptURL = "https://script.google.com/macros/s/AKfycbzEUBhdwQY4L7eRklbohtek8V_fx8xY4_YbeTeJe38AnlbuLRV0ozxp0Q8vB94T_D2Q/exec"; 
-const noTelefonBendahari = "60133787248"; 
+const noTelefonBendahari = "60123456789"; 
 
 // Konfigurasi SweetAlert2 Tema Gelap/Futuristik
 const cyberSwal = Swal.mixin({
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 2. FUNGSI AUTO-FORMAT (MESRA PENGGUNA)
+    // 2. FUNGSI AUTO-FORMAT
     const icInput = document.getElementById('ic');
     icInput.addEventListener('input', function(e) {
         let val = this.value.replace(/\D/g, ''); 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function kiraJumlah() {
         const inputs = document.querySelectorAll('.peserta-input');
         const kotakBayar = document.getElementById('jumlah_bayar');
-        const hargaSatuBahagian = 900;
+        const hargaSatuBahagian = 680;
         let bilanganPeserta = 0;
         
         inputs.forEach(function(input) {
@@ -98,8 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     kiraJumlah(); 
 
-    // 4. FUNGSI LIVE COUNTER (TARIK DATA DARI GOOGLE SHEETS)
+    // 4. FUNGSI LIVE COUNTER (DUAL STATS)
     const counterElement = document.getElementById('liveCounterText');
+    const bakiElement = document.getElementById('bakiSlotText');
     
     function animateValue(obj, start, end, duration) {
         let startTimestamp = null;
@@ -120,11 +121,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             const jumlahTerkini = data.jumlah || 0;
+            const bakiSlot = 7 - (jumlahTerkini % 7);
+
             animateValue(counterElement, 0, jumlahTerkini, 2000);
+            animateValue(bakiElement, 0, bakiSlot, 2000);
         })
         .catch(error => {
             console.error('Ralat Live Counter:', error);
             counterElement.innerHTML = "-";
+            bakiElement.innerHTML = "-";
         });
 
     // 5. FUNGSI HANTAR DATA & PAYMENT ROUTING
@@ -159,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(scriptURL, { method: 'POST', body: requestBody })
             .then(response => {
                 
-                // ROUTING 1: ONLINE TRANSFER (Hantar WA)
                 if (modBayaran === 'Online Transfer') {
                     cyberSwal.fire({
                         icon: 'success',
@@ -171,14 +175,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         cancelButtonText: 'TUTUP'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            const teksWA = `Assalamualaikum Tuan Bendahari MKSLB. Saya *${namaPengguna}* telah mendaftar Qurban 2026. Jumlah bayaran adalah *RM${jumlahRinggit}*. Bersama ini saya sertakan bukti resit pembayaran pemindahan dalam talian saya. Terima kasih.`;
+                            const teksWA = `Assalamualaikum Bendahari MKSLB. Saya *${namaPengguna}* telah mendaftar Qurban 2026. Jumlah bayaran adalah *RM${jumlahRinggit}*. Bersama ini saya sertakan bukti resit pembayaran pemindahan dalam talian saya. Terima kasih.`;
                             const pautanWA = `https://wa.me/${noTelefonBendahari}?text=${encodeURIComponent(teksWA)}`;
                             window.open(pautanWA, '_blank');
                         }
                         resetBorang();
                     });
                 } 
-                // ROUTING 2: TOYYIBPAY (Redirect Gateway)
                 else if (modBayaran === 'ToyyibPay') {
                     cyberSwal.fire({
                         icon: 'success',
@@ -192,12 +195,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         window.location.href = "https://toyyibpay.com/Bayaran-Qurban-2026";
                     });
                 } 
-                // ROUTING 3: TUNAI (Biasa)
                 else {
                     cyberSwal.fire({
                         icon: 'success',
                         title: 'TRANSMISI BERJAYA',
-                        text: 'ALHAMDULILLAH, MAKLUMAT PENDAFTARAN QURBAN TELAH DITERIMA DAN DIREKODKAN KE DALAM SISTEM MKSLB.',
+                        text: 'MAKLUMAT PENDAFTARAN QURBAN TELAH DITERIMA DAN DIREKODKAN KE DALAM SISTEM.',
                         iconColor: '#00ff88',
                         confirmButtonText: 'SELESAI'
                     }).then(() => {

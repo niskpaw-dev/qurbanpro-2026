@@ -54,15 +54,20 @@ body {
 .logo-masjid { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid var(--neon-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); transition: transform 0.4s ease, box-shadow 0.4s ease; background-color: white; }
 .logo-masjid:hover { transform: scale(1.08); box-shadow: 0 0 35px rgba(0, 255, 136, 0.8); }
 
-/* --- GAYA LIVE COUNTER --- */
+/* --- GAYA LIVE COUNTER (DUAL) --- */
 .live-counter-box { text-align: center; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--neon-green); border-radius: 8px; padding: 25px 20px; margin-bottom: 35px; box-shadow: 0 0 15px rgba(0, 255, 136, 0.05), inset 0 0 20px rgba(0, 255, 136, 0.02); position: relative; overflow: hidden; }
 .live-counter-box::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, rgba(0, 255, 136, 0.1), transparent 30%); animation: rotateRadar 4s linear infinite; pointer-events: none; }
 @keyframes rotateRadar { 100% { transform: rotate(360deg); } }
 .counter-title { color: var(--text-muted); font-size: 16px; margin-top: 0; margin-bottom: 10px; letter-spacing: 3px; }
+.stats-container { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 15px; }
+.stat-item { flex: 1; min-width: 140px; }
 .counter-display { display: inline-block; padding: 10px 30px; background: rgba(0, 255, 136, 0.05); border-radius: 6px; border-bottom: 2px solid var(--neon-green); }
 .counter-number { font-size: 55px; font-weight: 700; color: var(--neon-green); text-shadow: 0 0 25px var(--neon-green); line-height: 1; }
 .counter-label { color: var(--text-main); font-size: 15px; letter-spacing: 2px; margin-top: 15px; margin-bottom: 0; }
-/* ------------------------- */
+.counter-display.baki-box { border-bottom: 2px solid #ff3366; background: rgba(255, 51, 102, 0.05); }
+.counter-number.baki-num { color: #ff3366; text-shadow: 0 0 25px #ff3366; }
+.counter-label.baki-label { color: #ff3366; }
+/* -------------------------------- */
 
 .section-title { background: linear-gradient(90deg, var(--neon-green-dim) 0%, transparent 100%); color: var(--neon-green); padding: 10px 20px; border-left: 4px solid var(--neon-green); font-weight: 600; margin-top: 35px; margin-bottom: 25px; font-size: 20px; letter-spacing: 1px; text-transform: uppercase; }
 .form-group { margin-bottom: 24px; }
@@ -106,7 +111,7 @@ td.num-col { text-align: center; font-weight: bold; color: var(--text-muted); wi
 .footer-signature .dev-name { color: var(--neon-green); font-weight: 700; letter-spacing: 4px; text-shadow: 0 0 8px rgba(0, 255, 136, 0.4); margin-left: 5px; transition: text-shadow 0.3s ease; cursor: default; }
 .footer-signature .dev-name:hover { text-shadow: 0 0 15px rgba(0, 255, 136, 0.8); }
 
-/* SweetAlert overrides (Kosmetik Popup) */
+/* SweetAlert overrides */
 .cyber-popup { border: 1px solid #00ff88 !important; box-shadow: 0 0 20px rgba(0,255,136,0.2) !important; font-family: 'Rajdhani', sans-serif; }
 .swal2-confirm.cyber-confirm { background: transparent !important; border: 1px solid #00ff88 !important; color: #00ff88 !important; border-radius: 4px !important; text-transform: uppercase; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px; }
 .swal2-confirm.cyber-confirm:hover { background: #00ff88 !important; color: #000 !important; }
