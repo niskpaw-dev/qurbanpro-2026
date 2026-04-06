@@ -159,7 +159,7 @@ if(form) {
         };
 
         // 3. Hantar Data ke Apps Script
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzEUBhdwQY4L7eRklbohtek8V_fx8xY4_YbeTeJe38AnlbuLRV0ozxp0Q8vB94T_D2Q/exec'; 
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyTlC6Fs56O_G4xvCKj_WoANeMSZfsOlZRm5n9--4qhA0WKqXG8l1-FOLYRP9j9RDIc/exec'; 
 
         fetch(scriptURL, {
             method: 'POST',
