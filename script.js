@@ -1,227 +1,197 @@
-// --- KONFIGURASI SISTEM ---
-// Gantikan ini dengan Web App URL dari Google Apps Script Tuan
-const scriptURL = "https://script.google.com/macros/s/AKfycbzEUBhdwQY4L7eRklbohtek8V_fx8xY4_YbeTeJe38AnlbuLRV0ozxp0Q8vB94T_D2Q/exec"; 
-const noTelefonBendahari = "60133787248"; 
+// =====================================================================
+// SISTEM QURBANPRO 2026 - JAVASCRIPT MASTER FILE
+// DIBANGUNKAN OLEH: NISKALA PAWAKA
+// =====================================================================
 
-// Konfigurasi SweetAlert2 Tema Gelap/Futuristik
-const cyberSwal = Swal.mixin({
-    background: '#0a1914',
-    color: '#00ff88',
-    customClass: {
-        popup: 'cyber-popup',
-        confirmButton: 'cyber-confirm',
-        cancelButton: 'cyber-cancel'
+// --- 1. LOGIK JAM UNDUR (TARIKH TUTUP: 24 MEI 2026) ---
+const tarikhTutup = new Date("May 24, 2026 23:59:59").getTime();
+
+const timerInterval = setInterval(function() {
+    const sekarang = new Date().getTime();
+    const jarak = tarikhTutup - sekarang;
+
+    // Pengiraan masa
+    const hari = Math.floor(jarak / (1000 * 60 * 60 * 24));
+    const jam = Math.floor((jarak % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minit = Math.floor((jarak % (1000 * 60 * 60)) / (1000 * 60));
+    const saat = Math.floor((jarak % (1000 * 60)) / 1000);
+
+    const timerElemen = document.getElementById("countdownTimer");
+    const btnSubmit = document.getElementById("submitBtn");
+
+    if (jarak < 0) {
+        clearInterval(timerInterval);
+        timerElemen.innerHTML = "PENDAFTARAN TELAH DITUTUP";
+        
+        // Ubah rupa butang dan nyahaktifkan (Disable) jika dah tamat
+        btnSubmit.disabled = true;
+        btnSubmit.innerText = "SISTEM DITUTUP";
+        btnSubmit.style.background = "rgba(255, 68, 68, 0.1)";
+        btnSubmit.style.color = "#ff4444";
+        btnSubmit.style.borderColor = "#ff4444";
+        btnSubmit.style.cursor = "not-allowed";
+        btnSubmit.style.boxShadow = "none";
+    } else {
+        timerElemen.innerHTML = `${hari} Hari, ${jam} Jam, ${minit} Minit, ${saat} Saat`;
+    }
+}, 1000);
+
+
+// --- 2. LOGIK PENGIRAAN AUTOMATIK (RM900 / BAHAGIAN) ---
+const pesertaInputs = document.querySelectorAll('.peserta-input');
+const jumlahBayarInput = document.getElementById('jumlah_bayar');
+
+// Dengar setiap kali pengguna menaip dalam kotak peserta
+pesertaInputs.forEach(input => {
+    input.addEventListener('input', kiraJumlah);
+});
+
+function kiraJumlah() {
+    let jumlahPeserta = 0;
+    pesertaInputs.forEach(input => {
+        if (input.value.trim() !== "") {
+            jumlahPeserta++;
+        }
+    });
+    // Darab jumlah orang dengan RM 900
+    const total = jumlahPeserta * 900;
+    jumlahBayarInput.value = total;
+}
+
+
+// --- 3. PAPARAN DINAMIK (MAKLUMAT BANK & WAKIL) ---
+const modBayaran = document.getElementById('kaedah_bayar');
+const bankInfo = document.getElementById('bank_info');
+
+modBayaran.addEventListener('change', function() {
+    if (this.value === 'Online Transfer') {
+        bankInfo.style.display = 'block';
+    } else {
+        bankInfo.style.display = 'none';
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    
-    const form = document.getElementById('qurbanForm');
-    const submitBtn = document.getElementById('submitBtn');
-    
-    // 1. Logik UI untuk Maklumat Bank & Nama Wakil
-    const kaedahBayar = document.getElementById('kaedah_bayar');
-    const bankInfo = document.getElementById('bank_info');
-    
-    kaedahBayar.addEventListener('change', function() {
-        bankInfo.style.display = (this.value === 'Online Transfer') ? 'block' : 'none';
-    });
+const radioKehadiran = document.querySelectorAll('input[name="kehadiran"]');
+const boxWakil = document.getElementById('box_wakil');
+const inputWakil = document.getElementById('nama_wakil');
 
-    const radiosKehadiran = document.querySelectorAll('input[name="kehadiran"]');
-    const boxWakil = document.getElementById('box_wakil');
-    const inputWakil = document.getElementById('nama_wakil');
+radioKehadiran.forEach(radio => {
+    radio.addEventListener('change', function() {
+        if (this.value === 'Wakil') {
+            boxWakil.style.display = 'block';
+            inputWakil.required = true; // Wajibkan isi jika hantar wakil
+        } else {
+            boxWakil.style.display = 'none';
+            inputWakil.required = false;
+            inputWakil.value = ""; // Kosongkan semula
+        }
+    });
+});
+
+
+// --- 4. LOGIK HANTAR BORANG (DATABASE & PDF) ---
+const form = document.getElementById('qurbanForm');
+
+form.addEventListener('submit', function(e) {
+    e.preventDefault(); // Halang page dari refresh bila tekan Hantar
     
-    radiosKehadiran.forEach(radio => {
-        radio.addEventListener('change', function() {
-            if(this.value === 'Wakil') {
-                boxWakil.style.display = 'block';
-                inputWakil.setAttribute('required', 'required');
-            } else {
-                boxWakil.style.display = 'none';
-                inputWakil.removeAttribute('required');
-                inputWakil.value = '';
-            }
+    // Keselamatan: Pastikan jumlah bayaran bukan 0 (mesti ada peserta)
+    if (jumlahBayarInput.value == 0 || jumlahBayarInput.value == "") {
+        Swal.fire({
+            title: 'Perhatian!',
+            text: 'Sila masukkan sekurang-kurangnya NAMA SATU PESERTA qurban di Bahagian B.',
+            icon: 'warning',
+            customClass: { popup: 'cyber-popup', confirmButton: 'swal2-confirm cyber-confirm' }
         });
-    });
-
-    // 2. FUNGSI AUTO-FORMAT
-    const icInput = document.getElementById('ic');
-    icInput.addEventListener('input', function(e) {
-        let val = this.value.replace(/\D/g, ''); 
-        if (val.length > 12) val = val.substring(0, 12); 
-        if (val.length > 8) {
-            this.value = val.substring(0,6) + '-' + val.substring(6,8) + '-' + val.substring(8);
-        } else if (val.length > 6) {
-            this.value = val.substring(0,6) + '-' + val.substring(6);
-        } else {
-            this.value = val;
-        }
-    });
-
-    const telInput = document.getElementById('telefon');
-    telInput.addEventListener('input', function(e) {
-        let val = this.value.replace(/\D/g, '');
-        if (val.length > 11) val = val.substring(0, 11);
-        if (val.length > 3) {
-            this.value = val.substring(0,3) + '-' + val.substring(3);
-        } else {
-            this.value = val;
-        }
-    });
-
-    // 3. FUNGSI KIRAAN AUTOMATIK
-    function kiraJumlah() {
-        const inputs = document.querySelectorAll('.peserta-input');
-        const kotakBayar = document.getElementById('jumlah_bayar');
-        const hargaSatuBahagian = 900;
-        let bilanganPeserta = 0;
-        
-        inputs.forEach(function(input) {
-            if(input.value && input.value.trim() !== '') {
-                bilanganPeserta++;
-            }
-        });
-        
-        if(bilanganPeserta > 0) {
-            kotakBayar.value = bilanganPeserta * hargaSatuBahagian;
-        } else {
-            kotakBayar.value = '';
-        }
+        return; // Hentikan fungsi jika kosong
     }
 
-    const semuaInputPeserta = document.querySelectorAll('.peserta-input');
-    semuaInputPeserta.forEach(function(input) {
-        input.addEventListener('input', kiraJumlah);
-        input.addEventListener('keyup', kiraJumlah);
-        input.addEventListener('change', kiraJumlah);
+    // 1. Tunjukkan paparan "Loading" sebelum fetch berjalan
+    Swal.fire({
+        title: 'Sistem Sedang Memproses...',
+        text: 'Menjana dokumen pendaftaran rasmi. Sila tunggu sebentar...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+        customClass: { popup: 'cyber-popup' }
     });
 
-    kiraJumlah(); 
-
-    // 4. FUNGSI LIVE COUNTER (DUAL STATS)
-    const counterElement = document.getElementById('liveCounterText');
-    const bakiElement = document.getElementById('bakiSlotText');
+    // 2. Kumpul data dari form
+    const kaedah_bayar = document.getElementById('kaedah_bayar').value;
+    const nama = document.getElementById('nama').value;
     
-    function animateValue(obj, start, end, duration) {
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            obj.innerHTML = Math.floor(progress * (end - start) + start);
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            } else {
-                obj.innerHTML = end.toLocaleString('en-US'); 
-            }
-        };
-        window.requestAnimationFrame(step);
-    }
+    const dataForm = {
+        nama: nama,
+        ic: document.getElementById('ic').value,
+        telefon: document.getElementById('telefon').value,
+        alamat: document.getElementById('alamat').value,
+        agihan: document.querySelector('input[name="agihan"]:checked').value,
+        kaedah_bayar: kaedah_bayar,
+        jumlah: document.getElementById('jumlah_bayar').value
+    };
 
-    fetch(scriptURL)
-        .then(response => response.json())
-        .then(data => {
-            const jumlahTerkini = data.jumlah || 0;
-            const bakiSlot = 7 - (jumlahTerkini % 7);
+    // 3. Hantar Data ke Apps Script (KOD TUAN)
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzEUBhdwQY4L7eRklbohtek8V_fx8xY4_YbeTeJe38AnlbuLRV0ozxp0Q8vB94T_D2Q/exec'; 
 
-            animateValue(counterElement, 0, jumlahTerkini, 2000);
-            animateValue(bakiElement, 0, bakiSlot, 2000);
-        })
-        .catch(error => {
-            console.error('Ralat Live Counter:', error);
-            counterElement.innerHTML = "-";
-            bakiElement.innerHTML = "-";
-        });
+    fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(dataForm) 
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.result === "success") {
+            let pdfLink = result.pdfUrl;
+            let docType = result.jenisDokumen;
 
-    // 5. FUNGSI HANTAR DATA & PAYMENT ROUTING
-    submitBtn.addEventListener('click', e => {
-        e.preventDefault();
-
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            cyberSwal.fire({
-                icon: 'warning',
-                title: 'SISTEM AMARAN',
-                text: 'SILA LENGKAPKAN SEMUA MEDAN DATA YANG DIPERLUKAN.',
-                iconColor: '#ffcc00'
-            });
-            return;
-        }
-
-        cyberSwal.fire({
-            title: 'TRANSMISI DATA',
-            text: 'MENGHANTAR MAKLUMAT KE PANGKALAN DATA MKSLB...',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
-        let requestBody = new FormData(form);
-        const modBayaran = document.getElementById('kaedah_bayar').value;
-        const namaPengguna = document.getElementById('nama').value;
-        const jumlahRinggit = document.getElementById('jumlah_bayar').value;
-
-        fetch(scriptURL, { method: 'POST', body: requestBody })
-            .then(response => {
-                
-                if (modBayaran === 'Online Transfer') {
-                    cyberSwal.fire({
-                        icon: 'success',
-                        title: 'TRANSMISI BERJAYA',
-                        text: 'DATA DIREKODKAN. SILA KLIK BUTANG DI BAWAH UNTUK MENGHANTAR RESIT WHATSAPP.',
-                        iconColor: '#00ff88',
-                        showCancelButton: true,
-                        confirmButtonText: 'HANTAR RESIT',
-                        cancelButtonText: 'TUTUP'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            const teksWA = `Assalamualaikum Bendahari MKSLB. Saya *${namaPengguna}* telah mendaftar Qurban 2026. Jumlah bayaran adalah *RM${jumlahRinggit}*. Bersama ini saya sertakan bukti resit pembayaran pemindahan dalam talian saya. Terima kasih.`;
-                            const pautanWA = `https://wa.me/${noTelefonBendahari}?text=${encodeURIComponent(teksWA)}`;
-                            window.open(pautanWA, '_blank');
-                        }
-                        resetBorang();
-                    });
-                } 
-                else if (modBayaran === 'ToyyibPay') {
-                    cyberSwal.fire({
-                        icon: 'success',
-                        title: 'TRANSMISI BERJAYA',
-                        text: 'DATA TELAH DIREKOD. SISTEM AKAN MEMBAWA ANDA KE TOYYIBPAY SEBENTAR LAGI...',
-                        iconColor: '#00ff88',
-                        showConfirmButton: false,
-                        timer: 3500 
-                    }).then(() => {
-                        resetBorang();
-                        window.location.href = "https://toyyibpay.com/Bayaran-Qurban-2026";
-                    });
-                } 
-                else {
-                    cyberSwal.fire({
-                        icon: 'success',
-                        title: 'TRANSMISI BERJAYA',
-                        text: 'MAKLUMAT PENDAFTARAN QURBAN TELAH DITERIMA DAN DIREKODKAN KE DALAM SISTEM.',
-                        iconColor: '#00ff88',
-                        confirmButtonText: 'SELESAI'
-                    }).then(() => {
-                        resetBorang();
-                    });
+            Swal.fire({
+                title: 'Alhamdulillah!',
+                text: 'Pendaftaran Qurban anda berjaya direkodkan.',
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: `📥 Muat Turun ${docType}`,
+                cancelButtonText: 'Tutup & Teruskan',
+                // Terapkan kelas CSS khas supaya popup nampak Cyber/Neon
+                customClass: {
+                    popup: 'cyber-popup',
+                    confirmButton: 'swal2-confirm cyber-confirm',
+                    cancelButton: 'swal2-cancel cyber-cancel'
                 }
-            })
-            .catch(error => {
-                cyberSwal.fire({
-                    icon: 'error',
-                    title: 'RALAT SISTEM',
-                    text: 'TRANSMISI GAGAL. SILA SEMAK RANGKAIAN DAN CUBA LAGI.',
-                    iconColor: '#ff3366'
-                });
-                console.error('Error!', error.message);
+            }).then((action) => {
+                if (action.isConfirmed) {
+                    window.open(pdfLink, '_blank');
+                }
+                
+                if (kaedah_bayar === "Online Transfer") {
+                    let nomborBendahari = "60133787248"; 
+                    let ayatWhatsApp = `Assalamualaikum Bendahari. Saya ${nama} telah mendaftar Qurban 2026. Bersama ini saya lampirkan resit rasmi untuk rujukan pihak masjid: ${pdfLink}`;
+                    let urlWhatsApp = `https://wa.me/${nomborBendahari}?text=${encodeURIComponent(ayatWhatsApp)}`;
+                    
+                    window.open(urlWhatsApp, '_blank');
+                }
             });
-            
-            function resetBorang() {
-                form.reset();
-                document.getElementById('jumlah_bayar').value = '';
-                bankInfo.style.display = 'none';
-                boxWakil.style.display = 'none';
-            }
+
+            form.reset(); // Kosongkan borang
+            kiraJumlah(); // Reset pengiraan matematik kembali ke 0
+            bankInfo.style.display = 'none'; // Sorok balik info bank
+            boxWakil.style.display = 'none'; // Sorok balik box wakil
+
+        } else {
+            Swal.fire({
+                title: 'Ralat!', 
+                text: 'Pendaftaran tidak berjaya: ' + result.message, 
+                icon: 'error',
+                customClass: { popup: 'cyber-popup', confirmButton: 'swal2-confirm cyber-confirm' }
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            title: 'Ralat Sistem!', 
+            text: 'Sila cuba sebentar lagi atau hubungi AJK.', 
+            icon: 'error',
+            customClass: { popup: 'cyber-popup', confirmButton: 'swal2-confirm cyber-confirm' }
+        });
+        console.error('Error Fetch:', error.message);
     });
 });

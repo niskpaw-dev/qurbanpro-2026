@@ -54,6 +54,23 @@ body {
 .logo-masjid { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid var(--neon-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); transition: transform 0.4s ease, box-shadow 0.4s ease; background-color: white; }
 .logo-masjid:hover { transform: scale(1.08); box-shadow: 0 0 35px rgba(0, 255, 136, 0.8); }
 
+/* --- BANNER TARIKH TUTUP (24 MEI 2026) --- */
+.deadline-banner {
+    background: rgba(255, 68, 68, 0.05);
+    border: 1px dashed #ff4444;
+    text-align: center;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.1);
+    animation: pulseRed 2s infinite;
+}
+@keyframes pulseRed {
+    0% { box-shadow: 0 0 10px rgba(255, 68, 68, 0.1); }
+    50% { box-shadow: 0 0 20px rgba(255, 68, 68, 0.3); }
+    100% { box-shadow: 0 0 10px rgba(255, 68, 68, 0.1); }
+}
+
 /* --- GAYA LIVE COUNTER (DUAL) --- */
 .live-counter-box { text-align: center; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--neon-green); border-radius: 8px; padding: 25px 20px; margin-bottom: 35px; box-shadow: 0 0 15px rgba(0, 255, 136, 0.05), inset 0 0 20px rgba(0, 255, 136, 0.02); position: relative; overflow: hidden; }
 .live-counter-box::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, rgba(0, 255, 136, 0.1), transparent 30%); animation: rotateRadar 4s linear infinite; pointer-events: none; }
@@ -70,7 +87,12 @@ body {
 /* -------------------------------- */
 
 .section-title { background: linear-gradient(90deg, var(--neon-green-dim) 0%, transparent 100%); color: var(--neon-green); padding: 10px 20px; border-left: 4px solid var(--neon-green); font-weight: 600; margin-top: 35px; margin-bottom: 25px; font-size: 20px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* --- TEKNIK JIMAT RUANG SKRIN (GRID) --- */
+.form-row { display: flex; gap: 20px; }
+.form-row .form-group { flex: 1; margin-bottom: 24px; }
 .form-group { margin-bottom: 24px; }
+
 label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-muted); font-size: 16px; letter-spacing: 0.5px; }
 input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select { width: 100%; padding: 14px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-color); border-radius: 6px; box-sizing: border-box; font-size: 16px; font-family: 'Rajdhani', sans-serif; color: var(--neon-green); transition: all 0.3s ease; }
 input::placeholder { color: rgba(138, 180, 165, 0.4); }
@@ -128,4 +150,7 @@ td.num-col { text-align: center; font-weight: bold; color: var(--text-muted); wi
     th, td { padding: 10px; font-size: 15px; }
     .price-note { flex-direction: column; gap: 5px; }
     .footer-signature { font-size: 12px; }
+    
+    /* Tambahan untuk Grid Mobile supaya tak sempit */
+    .form-row { flex-direction: column; gap: 0; }
 }

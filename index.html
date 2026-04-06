@@ -24,6 +24,11 @@
         </div>
     </div>
 
+    <div class="deadline-banner" id="deadlineBanner">
+        <h4 style="margin: 0; color: #ff4444;">⚠️ TARIKH TUTUP PENYERTAAN: 24 MEI 2026</h4>
+        <div id="countdownTimer" style="font-weight: bold; margin-top: 5px;">Kira detik sedang dimuat...</div>
+    </div>
+
     <div class="live-counter-box">
         <h3 class="counter-title">STATISTIK QURBAN SEMASA</h3>
         
@@ -43,12 +48,17 @@
             </div>
         </div>
     </div>
+    
     <form id="qurbanForm">
         <div class="section-title">A. MAKLUMAT PEWAKIL</div>
-        <div class="form-group"><label for="nama">[ DATA ] NAMA PENUH :</label><input type="text" id="nama" name="nama" required placeholder="NAMA PENUH ANDA"></div>
-        <div class="form-group"><label for="ic">[ DATA ] NO. KAD PENGENALAN :</label><input type="text" id="ic" name="ic" required placeholder="000000-00-0000"></div>
-        <div class="form-group"><label for="telefon">[ DATA ] NO. TELEFON / WHATSAPP :</label><input type="tel" id="telefon" name="telefon" required placeholder="01X-XXXXXXX"></div>
-        <div class="form-group"><label for="alamat">[ DATA ] ALAMAT LENGKAP :</label><input type="text" id="alamat" name="alamat" required placeholder="ALAMAT TERKINI"></div>
+        <div class="form-row">
+            <div class="form-group"><label for="nama">[ DATA ] NAMA PENUH :</label><input type="text" id="nama" name="nama" required placeholder="NAMA PENUH ANDA"></div>
+            <div class="form-group"><label for="ic">[ DATA ] NO. KAD PENGENALAN :</label><input type="text" id="ic" name="ic" required placeholder="000000-00-0000"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label for="telefon">[ DATA ] NO. TELEFON / WHATSAPP :</label><input type="tel" id="telefon" name="telefon" required placeholder="01X-XXXXXXX"></div>
+            <div class="form-group"><label for="alamat">[ DATA ] ALAMAT LENGKAP :</label><input type="text" id="alamat" name="alamat" required placeholder="ALAMAT TERKINI"></div>
+        </div>
 
         <div class="section-title">B. LAFAZ AKAD & SENARAI PESERTA</div>
         <div class="akad-box">"Adalah dengan ini saya mewakilkan kepada pihak Masjid Kampung Sungai Lang Baru untuk membeli dan melaksanakan ibadah Qurban bagi pihak saya / penama yang didaftarkan seperti berikut:"</div>
@@ -101,7 +111,7 @@
         </div>
         <div class="form-group" id="box_wakil"><label for="nama_wakil">[ DATA ] NAMA WAKIL :</label><input type="text" id="nama_wakil" name="nama_wakil" placeholder="INPUT NAMA WAKIL"></div>
 
-        <button type="button" id="submitBtn" class="btn-submit">HANTAR BORANG SEKARANG</button>
+        <button type="submit" id="submitBtn" class="btn-submit">HANTAR BORANG SEKARANG</button>
     </form>
 
     <div class="footer-signature">SISTEM DIBANGUNKAN OLEH <span class="dev-name">NISKALA PAWAKA</span></div>
