@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function kiraJumlah() {
         const inputs = document.querySelectorAll('.peserta-input');
         const kotakBayar = document.getElementById('jumlah_bayar');
-        const hargaSatuBahagian = 680;
+        const hargaSatuBahagian = 9000;
         let bilanganPeserta = 0;
         
         inputs.forEach(function(input) {
