@@ -1,7 +1,7 @@
 // --- KONFIGURASI SISTEM ---
 // Gantikan ini dengan Web App URL dari Google Apps Script Tuan
 const scriptURL = "https://script.google.com/macros/s/AKfycbzEUBhdwQY4L7eRklbohtek8V_fx8xY4_YbeTeJe38AnlbuLRV0ozxp0Q8vB94T_D2Q/exec"; 
-const noTelefonBendahari = "60123456789"; 
+const noTelefonBendahari = "60133787248"; 
 
 // Konfigurasi SweetAlert2 Tema Gelap/Futuristik
 const cyberSwal = Swal.mixin({
