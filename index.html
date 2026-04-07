@@ -1,103 +1,108 @@
-:root {
-    --neon-green: #00ff88;
-    --neon-green-dim: rgba(0, 255, 136, 0.2);
-    --dark-bg: #050b0a;
-    --panel-bg: rgba(6, 20, 15, 0.65);
-    --border-color: rgba(0, 255, 136, 0.3);
-    --text-main: #e2f1ec;
-    --text-muted: #8ab4a5;
-}
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Qurban 2026 - Masjid Kampung Sungai Lang Baru</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-body {
-    font-family: 'Rajdhani', sans-serif;
-    background: radial-gradient(circle at 50% 0%, #062a1f 0%, var(--dark-bg) 100%);
-    background-attachment: fixed;
-    color: var(--text-main);
-    line-height: 1.6;
-    margin: 0; padding: 40px 15px;
-}
+<!-- HIDDEN PDF TEMPLATE (STILL NEEDED FOR FUNCTION) -->
+<div style="position: absolute; top: -9999px; left: -9999px;">
+    <div id="resitKandungan" style="width: 700px; padding: 50px; background: white; color: #333; font-family: Arial;">
+        <h1 style="text-align:center; color:#062a1f;">MASJID KAMPUNG SUNGAI LANG BARU</h1>
+        <hr>
+        <h2 id="tajuk_dokumen" style="text-align:center;">RESIT PENDAFTARAN</h2>
+        <p>Nama: <strong id="r_nama"></strong></p>
+        <p>IC: <span id="r_ic"></span></p>
+        <p>Tarikh: <span id="r_tarikh"></span></p>
+        <p>Kaedah: <span id="r_kaedah"></span></p>
+        <h2 style="text-align:center; background:#f2f2f2; padding:10px;">JUMLAH: RM <span id="r_jumlah"></span></h2>
+    </div>
+</div>
 
-.container {
-    max-width: 850px; margin: 0 auto;
-    background: var(--panel-bg);
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
-    padding: 40px; border-radius: 12px;
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
-    position: relative; overflow: hidden;
-}
+<div class="container">
+    <div class="header-title">
+        <div class="header-spacer"></div>
+        <div class="header-text">
+            <h1>SISTEM QURBANPRO 2026</h1>
+            <p>MASJID KAMPUNG SUNGAI LANG BARU</p>
+        </div>
+        <div class="header-logo-container">
+            <img src="https://arleta.site/interactivelink/1610/LOGO-MKSLB.png" class="logo-masjid">
+        </div>
+    </div>
 
-/* Kesan Scanline Bergerak */
-.container::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
-    animation: scanline 4s linear infinite; opacity: 0.3;
-}
-@keyframes scanline { 0% { top: 0; } 100% { top: 100%; } }
+    <div class="deadline-banner">
+        <h4 style="margin: 0; color: #ff4444;">⚠️ TARIKH TUTUP: 24 MEI 2026</h4>
+        <div id="countdownTimer" style="font-weight: bold; color: var(--neon-green);">...</div>
+    </div>
 
-/* Header Layout */
-.header-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
-.header-spacer { flex: 1; }
-.header-text { flex: 3; text-align: center; }
-.header-text h1 { color: var(--neon-green); margin-bottom: 5px; font-size: 32px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--neon-green-dim); }
-.header-logo-container { flex: 1; display: flex; justify-content: flex-end; }
-.logo-masjid { width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--neon-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); background: white; }
+    <div class="live-counter-box">
+        <p class="counter-title">STATISTIK QURBAN SEMASA</p>
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="counter-display">
+                    <span id="liveCounterText" class="counter-number">0</span>
+                </div>
+                <p class="counter-label">PESERTA TERKUMPUL</p>
+            </div>
+            <div class="stat-item">
+                <div class="counter-display baki-box">
+                    <span id="bakiSlotText" class="counter-number baki-num">7</span>
+                </div>
+                <p class="counter-label" style="color:#ff3366">BAKI SLOT SEMASA</p>
+            </div>
+        </div>
+    </div>
+    
+    <form id="qurbanForm">
+        <div class="section-title">A. MAKLUMAT PEWAKIL</div>
+        <div class="form-row">
+            <div class="form-group"><label>NAMA PENUH :</label><input type="text" id="nama" required></div>
+            <div class="form-group"><label>NO. KAD PENGENALAN :</label><input type="text" id="ic" required></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>NO. TELEFON :</label><input type="tel" id="telefon" required></div>
+            <div class="form-group"><label>ALAMAT :</label><input type="text" id="alamat" required></div>
+        </div>
 
-/* Live Counter Box dengan Kesan Radar */
-.live-counter-box { 
-    text-align: center; background: rgba(0, 0, 0, 0.4); 
-    border: 1px solid var(--neon-green); border-radius: 8px; 
-    padding: 25px 20px; margin-bottom: 35px; position: relative; overflow: hidden; 
-}
-.live-counter-box::after { 
-    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; 
-    background: conic-gradient(transparent, rgba(0, 255, 136, 0.15), transparent 30%); 
-    animation: rotateRadar 4s linear infinite; pointer-events: none; 
-}
-@keyframes rotateRadar { 100% { transform: rotate(360deg); } }
+        <div class="section-title">B. SENARAI PESERTA</div>
+        <div class="akad-box">"Adalah dengan ini saya mewakilkan pihak Masjid untuk menguruskan ibadah Qurban..."</div>
+        <table>
+            <thead><tr><th class="num-col">ID</th><th>NAMA PESERTA (RM 900 / BAHAGIAN)</th></tr></thead>
+            <tbody>
+                <tr><td class="num-col">01</td><td><input type="text" name="peserta_1" class="peserta-input" required></td></tr>
+                <tr><td class="num-col">02</td><td><input type="text" name="peserta_2" class="peserta-input"></td></tr>
+                <tr><td class="num-col">03</td><td><input type="text" name="peserta_3" class="peserta-input"></td></tr>
+                <tr><td class="num-col">04</td><td><input type="text" name="peserta_4" class="peserta-input"></td></tr>
+            </tbody>
+        </table>
 
-.stats-container { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
-.counter-display { display: inline-block; padding: 10px 30px; background: rgba(0, 255, 136, 0.05); border-bottom: 2px solid var(--neon-green); }
-.counter-number { font-size: 55px; font-weight: 700; color: var(--neon-green); text-shadow: 0 0 25px var(--neon-green); line-height: 1; }
-.counter-label { color: var(--text-main); font-size: 15px; letter-spacing: 2px; margin-top: 10px; }
+        <div class="section-title">C. PEMBAYARAN</div>
+        <div class="form-row">
+            <div class="form-group"><label>JUMLAH (RM) :</label><input type="number" id="jumlah_bayar" readonly></div>
+            <div class="form-group">
+                <label>MOD :</label>
+                <select id="kaedah_bayar" required>
+                    <option value="">-- PILIH --</option>
+                    <option value="Tunai">TUNAI</option>
+                    <option value="Online Transfer">ONLINE TRANSFER</option>
+                </select>
+            </div>
+        </div>
+        <div id="bank_info" class="bank-info">
+            <p><strong>BANK ISLAM:</strong> 1207 4010 0317 14</p>
+        </div>
 
-/* Baki Box (Warna Merah/Pink) */
-.baki-box { border-bottom: 2px solid #ff3366; background: rgba(255, 51, 102, 0.05); }
-.baki-num { color: #ff3366; text-shadow: 0 0 25px #ff3366; }
-
-.section-title { 
-    background: linear-gradient(90deg, var(--neon-green-dim) 0%, transparent 100%); 
-    color: var(--neon-green); padding: 10px 20px; border-left: 4px solid var(--neon-green); 
-    font-weight: 600; margin-top: 35px; margin-bottom: 25px; text-transform: uppercase; 
-}
-
-/* Form Styling */
-.form-row { display: flex; gap: 20px; margin-bottom: 20px; }
-.form-group { flex: 1; }
-label { display: block; color: var(--text-muted); font-size: 14px; margin-bottom: 8px; }
-input, select { 
-    width: 100%; padding: 14px; background: rgba(0, 0, 0, 0.4); 
-    border: 1px solid var(--border-color); color: var(--neon-green); 
-    border-radius: 6px; font-family: 'Rajdhani'; font-size: 16px; 
-}
-input:focus { outline: none; border-color: var(--neon-green); background: rgba(0, 255, 136, 0.05); }
-
-/* Table Styling */
-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: rgba(0, 0, 0, 0.3); }
-th, td { border: 1px solid rgba(0, 255, 136, 0.15); padding: 12px; }
-th { color: var(--neon-green); text-transform: uppercase; background: rgba(0, 255, 136, 0.1); }
-.num-col { text-align: center; color: var(--text-muted); font-weight: bold; width: 40px; }
-.peserta-input { border: none !important; background: transparent !important; }
-
-/* Buttons */
-.btn-submit { 
-    width: 100%; padding: 18px; background: transparent; border: 1px solid var(--neon-green); 
-    color: var(--neon-green); font-size: 22px; font-weight: 700; cursor: pointer; 
-    text-transform: uppercase; letter-spacing: 3px; transition: 0.3s; margin-top: 30px; 
-}
-.btn-submit:hover { background: var(--neon-green); color: var(--dark-bg); box-shadow: 0 0 25px var(--neon-green); }
-
-.bank-info { display: none; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--neon-green); padding: 20px; border-radius: 6px; margin-top: 15px; animation: fadeIn 0.4s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-@media (max-width: 600px) { .form-row { flex-direction: column; } .header-title { flex-direction: column-reverse; gap: 20px; } }
+        <button type="submit" id="submitBtn" class="btn-submit">HANTAR SEKARANG</button>
+    </form>
+    <div class="footer-signature">SISTEM DIBANGUNKAN OLEH <span style="color:var(--neon-green)">NISKALA PAWAKA</span></div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
