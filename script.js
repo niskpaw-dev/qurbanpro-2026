@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- 4. LOGIK HANTAR BORANG (MATCHING GAS CODE) ---
     const form = document.getElementById('qurbanForm');
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxIVvtjNDkmbVUvgxtr3v6IC72Gi_kc_qtSxzZ4gNEadduip2t2pP6wtSBKIiJy-nC3/exec"; 
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzSEY2kKDK3IQbpE79ptTRXo7aVLuuZfDJ0abaz12NvgKaPMmQBZdvMoGSXnpESz_pr/exec"; 
 
     if(form) {
         form.addEventListener('submit', function(e) {
