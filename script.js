@@ -1,6 +1,7 @@
 // =====================================================================
-// SISTEM QURBANPRO 2026 - JAVASCRIPT MASTER FILE (LIVE & AUTOCRAT)
+// SISTEM QURBANPRO 2026 - MASTER JAVASCRIPT FILE
 // DIBANGUNKAN OLEH: NISKALA PAWAKA
+// Ciri: Live Counter, Frontend PDF Generator (Invois/Resit Auto-Switch)
 // =====================================================================
 
 // ⚠️ LETAKKAN URL WEB APP GOOGLE APPS SCRIPT YANG TERBARU DI SINI ⚠️
@@ -28,11 +29,8 @@ const timerInterval = setInterval(function() {
         if(btnSubmit) {
             btnSubmit.disabled = true;
             btnSubmit.innerText = "SISTEM DITUTUP";
-            btnSubmit.style.background = "rgba(255, 68, 68, 0.1)";
-            btnSubmit.style.color = "#ff4444";
-            btnSubmit.style.borderColor = "#ff4444";
+            btnSubmit.style.background = "#95a5a6";
             btnSubmit.style.cursor = "not-allowed";
-            btnSubmit.style.boxShadow = "none";
         }
     } else {
         if(timerElemen) {
@@ -50,22 +48,26 @@ const bakiSlotText = document.getElementById('bakiSlotText');
 
 let PESERTA_TERKUMPUL_LIVE = 0;
 
-// Fungsi untuk panggil data Live dari Google Sheets
 async function dapatkanStatistikLive() {
     try {
-        const response = await fetch(scriptURL);
+        const fetchURL = scriptURL + "?action=getLive";
+        const response = await fetch(fetchURL, { 
+            method: 'GET',
+            redirect: "follow",
+            headers: { "Content-Type": "text/plain;charset=utf-8" }
+        });
+        
         const data = await response.json();
-        PESERTA_TERKUMPUL_LIVE = data.count || 0; // Guna 0 jika tiada data
+        PESERTA_TERKUMPUL_LIVE = data.count || 0; 
         
         if(liveCounterText) liveCounterText.innerText = PESERTA_TERKUMPUL_LIVE;
-        kiraJumlah(); // Kemaskini matematik bila data masuk
+        kiraJumlah(); 
     } catch (error) {
         console.error("Gagal ambil data live:", error);
         if(liveCounterText) liveCounterText.innerText = "0";
     }
 }
 
-// Jalankan ketika website dimuatkan
 window.onload = function() {
     dapatkanStatistikLive();
 };
@@ -85,7 +87,6 @@ function kiraJumlah() {
     const total = jumlahPesertaBaru * 900;
     if(jumlahBayarInput) jumlahBayarInput.value = total;
 
-    // Gabung data LIVE dan nama yang sedang ditaip
     const jumlahKini = PESERTA_TERKUMPUL_LIVE + jumlahPesertaBaru;
     if(liveCounterText) liveCounterText.innerText = jumlahKini;
     
@@ -103,7 +104,7 @@ const bankInfo = document.getElementById('bank_info');
 
 if(modBayaran) {
     modBayaran.addEventListener('change', function() {
-        if (this.value === 'Online Transfer' || this.value === 'ToyyibPay') {
+        if (this.value === 'Online Transfer') {
             bankInfo.style.display = 'block';
         } else {
             bankInfo.style.display = 'none';
@@ -129,36 +130,28 @@ radioKehadiran.forEach(radio => {
 });
 
 
-// --- 4. LOGIK HANTAR BORANG ---
+// --- 4. LOGIK HANTAR BORANG & JANA PDF ---
 const form = document.getElementById('qurbanForm');
 
 if(form) {
     form.addEventListener('submit', function(e) {
         e.preventDefault(); 
         
-        // Elak hantar borang kosong
         if (jumlahBayarInput.value == 0 || jumlahBayarInput.value == "") {
-            Swal.fire({
-                title: 'Perhatian!',
-                text: 'Sila masukkan sekurang-kurangnya NAMA SATU PESERTA qurban di Bahagian B.',
-                icon: 'warning',
-                customClass: { popup: 'cyber-popup', confirmButton: 'swal2-confirm cyber-confirm' }
-            });
+            Swal.fire('Perhatian!', 'Sila masukkan sekurang-kurangnya NAMA SATU PESERTA qurban di Bahagian B.', 'warning');
             return; 
         }
 
         Swal.fire({
             title: 'Sistem Sedang Memproses...',
-            text: 'Menghantar data pendaftaran anda. Sila tunggu sebentar...',
+            text: 'Menghantar data dan menjana dokumen anda. Sila tunggu sebentar...',
             allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-            customClass: { popup: 'cyber-popup' }
+            didOpen: () => { Swal.showLoading(); }
         });
 
         const kaedah_bayar = document.getElementById('kaedah_bayar').value;
         const nama = document.getElementById('nama').value;
+        const emelVal = document.getElementById('emel') ? document.getElementById('emel').value : "";
         
         let kehadiranElemen = document.querySelector('input[name="kehadiran"]:checked');
         let kehadiran = kehadiranElemen ? kehadiranElemen.value : "";
@@ -173,8 +166,8 @@ if(form) {
             nama: nama,
             ic: document.getElementById('ic').value,
             telefon: document.getElementById('telefon').value,
+            emel: emelVal,
             alamat: document.getElementById('alamat').value,
-            
             peserta_1: getSafeValue('input[name="peserta_1"]'),
             peserta_2: getSafeValue('input[name="peserta_2"]'),
             peserta_3: getSafeValue('input[name="peserta_3"]'),
@@ -182,7 +175,6 @@ if(form) {
             peserta_5: getSafeValue('input[name="peserta_5"]'),
             peserta_6: getSafeValue('input[name="peserta_6"]'),
             peserta_7: getSafeValue('input[name="peserta_7"]'),
-
             agihan: document.querySelector('input[name="agihan"]:checked').value,
             kaedah_bayar: kaedah_bayar,
             jumlah: jumlahBayarInput.value,
@@ -197,48 +189,63 @@ if(form) {
         .then(response => response.json())
         .then(result => {
             if (result.result === "success") {
-                Swal.fire({
-                    title: 'Alhamdulillah!',
-                    text: 'Pendaftaran Qurban anda berjaya direkodkan. Pihak Masjid akan menghubungi anda dan menghantar resit rasmi tidak lama lagi.',
-                    icon: 'success',
-                    confirmButtonText: 'Tutup & Teruskan',
-                    customClass: {
-                        popup: 'cyber-popup',
-                        confirmButton: 'swal2-confirm cyber-confirm'
-                    }
-                }).then(() => {
-                    // Refresh data Live Counter supaya ia tambah serta merta lepas hantar borang
-                    dapatkanStatistikLive();
+                
+                // --- JANAAN PDF BERDASARKAN KAEDAH BAYARAN ---
+                let tarikhSemasa = new Date().toLocaleString("ms-MY", {timeZone: "Asia/Kuala_Lumpur"});
+                let jenisFail = "Resit";
+                let tajukDokumen = "RESIT PENDAFTARAN QURBAN 2026";
 
-                    if (kaedah_bayar === "Online Transfer") {
+                if (kaedah_bayar === "Tunai") {
+                    jenisFail = "Invois";
+                    tajukDokumen = "INVOIS PENDAFTARAN QURBAN 2026";
+                }
+
+                // Masukkan data ke dalam templat HTML
+                document.getElementById('tajuk_dokumen').innerText = tajukDokumen; 
+                document.getElementById('r_nama').innerText = nama;
+                document.getElementById('r_ic').innerText = document.getElementById('ic').value;
+                document.getElementById('r_tarikh').innerText = tarikhSemasa;
+                document.getElementById('r_kaedah').innerText = kaedah_bayar;
+                document.getElementById('r_jumlah').innerText = jumlahBayarInput.value;
+
+                const resitElemen = document.getElementById('resitKandungan');
+                const opsyenPDF = {
+                    margin:       0.5,
+                    filename:     jenisFail + '_Qurban_' + nama.replace(/ /g, "_") + '.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+                };
+
+                html2pdf().set(opsyenPDF).from(resitElemen).save().then(() => {
+                    
+                    Swal.fire({
+                        title: 'Alhamdulillah!',
+                        text: `${jenisFail} rasmi telah dimuat turun ke dalam peranti anda.`,
+                        icon: 'success',
+                        confirmButtonText: 'Tutup & Teruskan'
+                    }).then(() => {
+                        dapatkanStatistikLive(); // Kemaskini Kaunter
+
+                        // Logik WhatsApp Bendahari
                         let nomborBendahari = "60133787248"; 
-                        let ayatWhatsApp = `Assalamualaikum Bendahari. Saya ${nama} telah mendaftar Qurban 2026 dan telah membuat pembayaran Online Transfer. Mohon semakan pihak masjid. Terima kasih.`;
+                        let ayatWhatsApp = `Assalamualaikum Bendahari. Saya ${nama} telah mendaftar Qurban 2026 secara web dan telah memuat turun ${jenisFail} saya. Mohon pengesahan. Terima kasih.`;
                         let urlWhatsApp = `https://wa.me/${nomborBendahari}?text=${encodeURIComponent(ayatWhatsApp)}`;
                         window.open(urlWhatsApp, '_blank');
-                    }
-                });
+                    });
 
-                form.reset(); 
-                kiraJumlah(); 
-                if(bankInfo) bankInfo.style.display = 'none'; 
-                if(boxWakil) boxWakil.style.display = 'none'; 
+                    form.reset(); 
+                    kiraJumlah(); 
+                    if(bankInfo) bankInfo.style.display = 'none'; 
+                    if(boxWakil) boxWakil.style.display = 'none'; 
+                });
 
             } else {
-                Swal.fire({
-                    title: 'Ralat!', 
-                    text: 'Pendaftaran tidak berjaya: ' + result.message, 
-                    icon: 'error',
-                    customClass: { popup: 'cyber-popup', confirmButton: 'swal2-confirm cyber-confirm' }
-                });
+                Swal.fire('Ralat!', 'Pendaftaran tidak berjaya: ' + result.message, 'error');
             }
         })
         .catch(error => {
-            Swal.fire({
-                title: 'Ralat Sistem!', 
-                text: 'Sila cuba sebentar lagi atau hubungi AJK.', 
-                icon: 'error',
-                customClass: { popup: 'cyber-popup', confirmButton: 'swal2-confirm cyber-confirm' }
-            });
+            Swal.fire('Ralat Sistem!', 'Sila cuba sebentar lagi atau hubungi AJK.', 'error');
             console.error('Error Fetch:', error.message);
         });
     });
