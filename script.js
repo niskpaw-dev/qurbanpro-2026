@@ -1,7 +1,10 @@
 // =====================================================================
-// SISTEM QURBANPRO 2026 - JAVASCRIPT MASTER FILE (AUTOCRAT VERSION)
+// SISTEM QURBANPRO 2026 - JAVASCRIPT MASTER FILE (LIVE & AUTOCRAT)
 // DIBANGUNKAN OLEH: NISKALA PAWAKA
 // =====================================================================
+
+// ⚠️ LETAKKAN URL WEB APP GOOGLE APPS SCRIPT YANG TERBARU DI SINI ⚠️
+const scriptURL = "https://script.google.com/macros/s/AKfycbzv1nKzCUlly-jA4AHO317rB9TuFJ9v5mRYsmkqB_Y_f6kJqJRg1kMghTK6escjTFYc/exec";
 
 // --- 1. LOGIK JAM UNDUR (TARIKH TUTUP: 24 MEI 2026) ---
 const tarikhTutup = new Date("May 24, 2026 23:59:59").getTime();
@@ -38,24 +41,38 @@ const timerInterval = setInterval(function() {
     }
 }, 1000);
 
+
 // --- 2. LOGIK PENGIRAAN AUTOMATIK & STATISTIK LIVE ---
 const pesertaInputs = document.querySelectorAll('.peserta-input');
 const jumlahBayarInput = document.getElementById('jumlah_bayar');
 const liveCounterText = document.getElementById('liveCounterText');
 const bakiSlotText = document.getElementById('bakiSlotText');
 
-// Ganti angka ini dengan data sebenar peserta terkumpul di pangkalan data
-const PESERTA_SEDIA_ADA = 142; 
+let PESERTA_TERKUMPUL_LIVE = 0;
+
+// Fungsi untuk panggil data Live dari Google Sheets
+async function dapatkanStatistikLive() {
+    try {
+        const response = await fetch(scriptURL);
+        const data = await response.json();
+        PESERTA_TERKUMPUL_LIVE = data.count || 0; // Guna 0 jika tiada data
+        
+        if(liveCounterText) liveCounterText.innerText = PESERTA_TERKUMPUL_LIVE;
+        kiraJumlah(); // Kemaskini matematik bila data masuk
+    } catch (error) {
+        console.error("Gagal ambil data live:", error);
+        if(liveCounterText) liveCounterText.innerText = "0";
+    }
+}
+
+// Jalankan ketika website dimuatkan
+window.onload = function() {
+    dapatkanStatistikLive();
+};
 
 pesertaInputs.forEach(input => {
     input.addEventListener('input', kiraJumlah);
 });
-
-// Panggil fungsi ini sekali ketika halaman dimuatkan (untuk set nilai asas)
-window.onload = function() {
-    if(liveCounterText) liveCounterText.innerText = PESERTA_SEDIA_ADA;
-    kiraJumlah();
-};
 
 function kiraJumlah() {
     let jumlahPesertaBaru = 0;
@@ -68,17 +85,17 @@ function kiraJumlah() {
     const total = jumlahPesertaBaru * 900;
     if(jumlahBayarInput) jumlahBayarInput.value = total;
 
-    // Logik kemaskini statistik (PESERTA_SEDIA_ADA + yang sedang ditaip)
-    const jumlahKini = PESERTA_SEDIA_ADA + jumlahPesertaBaru;
+    // Gabung data LIVE dan nama yang sedang ditaip
+    const jumlahKini = PESERTA_TERKUMPUL_LIVE + jumlahPesertaBaru;
     if(liveCounterText) liveCounterText.innerText = jumlahKini;
     
-    // Kira baki (Pastikan ia tak tunjuk 0 bila genap seekor lembu)
     if(bakiSlotText) {
         let baki = 7 - (jumlahKini % 7);
-        if(jumlahKini > 0 && jumlahKini % 7 === 0) baki = 0; // Jika nak papar 0 bila genap
+        if (jumlahKini > 0 && jumlahKini % 7 === 0) baki = 0; 
         bakiSlotText.innerText = baki;
     }
 }
+
 
 // --- 3. PAPARAN DINAMIK (MAKLUMAT BANK & WAKIL) ---
 const modBayaran = document.getElementById('kaedah_bayar');
@@ -111,6 +128,7 @@ radioKehadiran.forEach(radio => {
     });
 });
 
+
 // --- 4. LOGIK HANTAR BORANG ---
 const form = document.getElementById('qurbanForm');
 
@@ -118,6 +136,7 @@ if(form) {
     form.addEventListener('submit', function(e) {
         e.preventDefault(); 
         
+        // Elak hantar borang kosong
         if (jumlahBayarInput.value == 0 || jumlahBayarInput.value == "") {
             Swal.fire({
                 title: 'Perhatian!',
@@ -145,7 +164,6 @@ if(form) {
         let kehadiran = kehadiranElemen ? kehadiranElemen.value : "";
         let namaWakil = kehadiran === "Wakil" ? document.getElementById('nama_wakil').value : "Tiada";
         
-        // Fungsi selamat untuk tangkap nilai input
         function getSafeValue(selector) {
             let el = document.querySelector(selector);
             return el ? el.value.trim() : "";
@@ -157,7 +175,6 @@ if(form) {
             telefon: document.getElementById('telefon').value,
             alamat: document.getElementById('alamat').value,
             
-            // Tangkap nama peserta 1 - 7
             peserta_1: getSafeValue('input[name="peserta_1"]'),
             peserta_2: getSafeValue('input[name="peserta_2"]'),
             peserta_3: getSafeValue('input[name="peserta_3"]'),
@@ -173,9 +190,6 @@ if(form) {
             nama_wakil: namaWakil                 
         };
 
-        // --- MASUKKAN PAUTAN GOOGLE APPS SCRIPT YANG TERBARU DI SINI ---
-        const scriptURL = "https://script.google.com/macros/s/AKfycbzv1nKzCUlly-jA4AHO317rB9TuFJ9v5mRYsmkqB_Y_f6kJqJRg1kMghTK6escjTFYc/exec";
-
         fetch(scriptURL, {
             method: 'POST',
             body: JSON.stringify(dataForm) 
@@ -183,7 +197,6 @@ if(form) {
         .then(response => response.json())
         .then(result => {
             if (result.result === "success") {
-                // Notis Berjaya (Tanpa Butang Muat Turun PDF)
                 Swal.fire({
                     title: 'Alhamdulillah!',
                     text: 'Pendaftaran Qurban anda berjaya direkodkan. Pihak Masjid akan menghubungi anda dan menghantar resit rasmi tidak lama lagi.',
@@ -194,7 +207,9 @@ if(form) {
                         confirmButton: 'swal2-confirm cyber-confirm'
                     }
                 }).then(() => {
-                    // Buka WhatsApp tanpa pautan PDF
+                    // Refresh data Live Counter supaya ia tambah serta merta lepas hantar borang
+                    dapatkanStatistikLive();
+
                     if (kaedah_bayar === "Online Transfer") {
                         let nomborBendahari = "60133787248"; 
                         let ayatWhatsApp = `Assalamualaikum Bendahari. Saya ${nama} telah mendaftar Qurban 2026 dan telah membuat pembayaran Online Transfer. Mohon semakan pihak masjid. Terima kasih.`;
@@ -203,7 +218,6 @@ if(form) {
                     }
                 });
 
-                // Kosongkan semula borang
                 form.reset(); 
                 kiraJumlah(); 
                 if(bankInfo) bankInfo.style.display = 'none'; 
