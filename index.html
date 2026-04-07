@@ -3,121 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Qurban 2026 - Masjid Kampung Sungai Lang Baru</title>
+    <title>QurbanPro 2026 - Masjid Kg Sg Lang Baru</title>
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Gaya Asas Untuk Borang Nampak Kemas */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; }
+        .container { max-width: 800px; background: white; margin: 0 auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #2c3e50; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #34495e; }
+        input[type="text"], input[type="number"], input[type="email"], select { width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 5px; box-sizing: border-box; }
+        .btn-submit { width: 100%; background: #27ae60; color: white; padding: 15px; font-size: 18px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+        .btn-submit:hover { background: #219a52; }
+        .stats-box { background: #ecf0f1; padding: 15px; text-align: center; border-radius: 5px; margin-bottom: 20px; }
+        .alert-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; border: 1px solid #ffeeba; margin-top: 10px; }
+    </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header-title">
-        <div class="header-spacer"></div>
-        <div class="header-text">
-            <h1>SISTEM QURBANPRO 2026</h1>
-            <p>MASJID KAMPUNG SUNGAI LANG BARU</p>
-        </div>
-        <div class="header-logo-container">
-            <img src="https://arleta.site/interactivelink/1610/LOGO-MKSLB.png" alt="Logo Masjid" class="logo-masjid">
-        </div>
-    </div>
-
-    <div class="deadline-banner" id="deadlineBanner">
-        <h4 style="margin: 0; color: #ff4444;">⚠️ TARIKH TUTUP PENYERTAAN: 24 MEI 2026</h4>
-        <div id="countdownTimer" style="font-weight: bold; margin-top: 5px;">Kira detik sedang dimuat...</div>
-    </div>
-
-    <div class="live-counter-box">
-        <h3 class="counter-title">STATISTIK QURBAN SEMASA</h3>
-        
-        <div class="stats-container">
-            <div class="stat-item">
-                <div class="counter-display">
-                    <span id="liveCounterText" class="counter-number">0</span>
-                </div>
-                <p class="counter-label">PESERTA TERKUMPUL</p>
-            </div>
-            
-            <div class="stat-item">
-                <div class="counter-display baki-box">
-                    <span id="bakiSlotText" class="counter-number baki-num">7</span>
-                </div>
-                <p class="counter-label baki-label">BAKI SLOT BAHAGIAN SEMASA</p>
-            </div>
-        </div>
-    </div>
+    <h1>SISTEM PENDAFTARAN QURBAN 2026</h1>
+    <h2>Masjid Kampung Sungai Lang Baru</h2>
     
+    <div class="stats-box">
+        <h3 id="countdownTimer" style="color: #e74c3c; margin: 0;">Sedang Mengira Masa...</h3>
+        <p style="margin: 10px 0 0 0; font-size: 18px;">
+            Peserta Terkumpul: <strong id="liveCounterText" style="color: #2980b9;">0</strong> | 
+            Baki Slot Lembu Terkini: <strong id="bakiSlotText" style="color: #27ae60;">7</strong>
+        </p>
+    </div>
+
     <form id="qurbanForm">
-        <div class="section-title">A. MAKLUMAT PEWAKIL</div>
-        <div class="form-row">
-            <div class="form-group"><label for="nama">[ DATA ] NAMA PENUH :</label><input type="text" id="nama" name="nama" required placeholder="NAMA PENUH ANDA"></div>
-            <div class="form-group"><label for="ic">[ DATA ] NO. KAD PENGENALAN :</label><input type="text" id="ic" name="ic" required placeholder="000000-00-0000"></div>
-        </div>
-        <div class="form-row">
-            <div class="form-group"><label for="telefon">[ DATA ] NO. TELEFON / WHATSAPP :</label><input type="tel" id="telefon" name="telefon" required placeholder="01X-XXXXXXX"></div>
-            <div class="form-group"><label for="alamat">[ DATA ] ALAMAT LENGKAP :</label><input type="text" id="alamat" name="alamat" required placeholder="ALAMAT TERKINI"></div>
-        </div>
+        <h3>BAHAGIAN A: MAKLUMAT PEWAKIL (KETUA)</h3>
+        <div class="form-group"><label>Nama Penuh:</label><input type="text" id="nama" required></div>
+        <div class="form-group"><label>No. Kad Pengenalan:</label><input type="text" id="ic" required></div>
+        <div class="form-group"><label>No. Telefon bimbit:</label><input type="text" id="telefon" required></div>
+        <div class="form-group"><label>E-mel (Pilihan - Untuk Resit):</label><input type="email" id="emel"></div>
+        <div class="form-group"><label>Alamat Rumah:</label><input type="text" id="alamat" required></div>
 
-        <div class="section-title">B. LAFAZ AKAD & SENARAI PESERTA</div>
-        <div class="akad-box">"Adalah dengan ini saya mewakilkan kepada pihak Masjid Kampung Sungai Lang Baru untuk membeli dan melaksanakan ibadah Qurban bagi pihak saya / penama yang didaftarkan seperti berikut:"</div>
+        <hr>
 
-        <table>
-            <thead><tr><th class="num-col">ID</th><th>NAMA PESERTA (1 BAHAGIAN = RM 900.00)</th></tr></thead>
-            <tbody>
-                <tr><td class="num-col">01</td><td><input type="text" name="peserta_1" class="peserta-input" placeholder="[ INPUT NAMA ]" required></td></tr>
-                <tr><td class="num-col">02</td><td><input type="text" name="peserta_2" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">03</td><td><input type="text" name="peserta_3" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">04</td><td><input type="text" name="peserta_4" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">05</td><td><input type="text" name="peserta_5" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">06</td><td><input type="text" name="peserta_6" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">07</td><td><input type="text" name="peserta_7" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-            </tbody>
-        </table>
-        <div class="price-note"><span>*HARGA ANGGARAN RM 900.00 / BAHAGIAN</span><span style="color: var(--neon-green);">[ PENGIRAAN AUTOMATIK AKTIF ]</span></div>
+        <h3>BAHAGIAN B: NAMA PESERTA QURBAN (RM 900 / Bahagian)</h3>
+        <div class="form-group"><label>Peserta 1:</label><input type="text" name="peserta_1" class="peserta-input"></div>
+        <div class="form-group"><label>Peserta 2:</label><input type="text" name="peserta_2" class="peserta-input"></div>
+        <div class="form-group"><label>Peserta 3:</label><input type="text" name="peserta_3" class="peserta-input"></div>
+        <div class="form-group"><label>Peserta 4:</label><input type="text" name="peserta_4" class="peserta-input"></div>
+        <div class="form-group"><label>Peserta 5:</label><input type="text" name="peserta_5" class="peserta-input"></div>
+        <div class="form-group"><label>Peserta 6:</label><input type="text" name="peserta_6" class="peserta-input"></div>
+        <div class="form-group"><label>Peserta 7:</label><input type="text" name="peserta_7" class="peserta-input"></div>
 
-        <div class="section-title">C. PILIHAN AGIHAN</div>
-        <div class="radio-group">
-            <div class="radio-option"><input type="radio" id="agihan1" name="agihan" value="Sedekah Semua" required><label for="agihan1">MENYERAHKAN KESELURUHAN BAHAGIAN KEPADA PIHAK MASJID.</label></div>
-            <div class="radio-option"><input type="radio" id="agihan2" name="agihan" value="Ambil Sebahagian"><label for="agihan2">MENGHENDAKI SEBAHAGIAN (3KG DAGING, TULANG & ORGAN).</label></div>
-        </div>
+        <hr>
 
-        <div class="section-title">D. STATUS PEMBAYARAN</div>
-        <div class="form-group"><label for="jumlah_bayar">JUMLAH KESELURUHAN (RM) :</label><input type="number" id="jumlah_bayar" name="jumlah_bayar" required placeholder="0" readonly style="background: rgba(0,255,136,0.1); font-weight: bold; color: var(--neon-green); cursor: not-allowed; font-size: 20px;"></div>
+        <h3>BAHAGIAN C: MAKLUMAT PENGURUSAN</h3>
+        
         <div class="form-group">
-            <label for="kaedah_bayar">MOD PEMBAYARAN :</label>
-            <select id="kaedah_bayar" name="kaedah_bayar" required>
-                <option value="">-- PILIH MOD --</option>
-                <option value="Tunai">WANG TUNAI (SERAH AJK)</option>
-                <option value="Online Transfer">PEMINDAHAN DALAM TALIAN</option>
-                <option value="ToyyibPay">PAYMENT GATEWAY (TOYYIBPAY)</option>
+            <label>Pilihan Agihan Daging:</label>
+            <input type="radio" name="agihan" value="Ambil Semua" required> Ambil Semua (1/3)<br>
+            <input type="radio" name="agihan" value="Infaq Semua"> Infaqkan Semua<br>
+            <input type="radio" name="agihan" value="Sebahagian"> Ambil Sebahagian, Infaq Sebahagian
+        </div>
+
+        <div class="form-group">
+            <label>Kehadiran Semasa Hari Qurban:</label>
+            <input type="radio" name="kehadiran" value="Hadir" required> Hadir<br>
+            <input type="radio" name="kehadiran" value="Tidak Hadir"> Tidak Hadir<br>
+            <input type="radio" name="kehadiran" value="Wakil"> Hantar Wakil
+        </div>
+        <div class="form-group" id="box_wakil" style="display: none;">
+            <label>Nama Wakil:</label>
+            <input type="text" id="nama_wakil">
+        </div>
+
+        <div class="form-group">
+            <label>Kaedah Bayaran:</label>
+            <select id="kaedah_bayar" required>
+                <option value="">-- Pilih Kaedah --</option>
+                <option value="Online Transfer">Online Transfer (CDM/Maybank2u dll)</option>
+                <option value="Tunai">Tunai (Serah kepada AJK)</option>
             </select>
         </div>
-
-        <div id="bank_info" class="bank-info">
-            <h4>[ MAKLUMAT AKAUN ]</h4>
-            <div class="bank-details">
-                <p><strong>NAMA AKAUN :</strong> Masjid Kampung Sungai Lang Baru</p>
-                <p><strong>NO. AKAUN :</strong> <span style="color: var(--neon-green); font-weight: bold; letter-spacing: 1px;">1207 4010 0317 14</span></p>
-                <p><strong>BANK :</strong> Bank Islam Malaysia Berhad</p>
-            </div>
+        
+        <div id="bank_info" class="alert-box" style="display: none;">
+            <strong>Sila buat pindahan ke akaun berikut:</strong><br>
+            Bank: MAYBANK<br>
+            Akaun: 123456789012 (Masjid Sg Lang Baru)<br>
+            Rujukan: Qurban 2026
         </div>
 
-        <div class="section-title">E. KOMITMEN KEHADIRAN</div>
-        <div class="radio-group">
-            <div class="radio-option"><input type="radio" id="hadir1" name="kehadiran" value="Hadir" required><label for="hadir1">SAYA AKAN HADIR</label></div>
-            <div class="radio-option"><input type="radio" id="hadir2" name="kehadiran" value="Wakil"><label for="hadir2">MENGHANTAR WAKIL</label></div>
+        <div class="form-group">
+            <label>Jumlah Perlu Dibayar (RM):</label>
+            <input type="number" id="jumlah_bayar" readonly style="background: #e8f8f5; font-size: 20px; font-weight: bold; color: #27ae60;">
         </div>
-        <div class="form-group" id="box_wakil"><label for="nama_wakil">[ DATA ] NAMA WAKIL :</label><input type="text" id="nama_wakil" name="nama_wakil" placeholder="INPUT NAMA WAKIL"></div>
 
-        <button type="submit" id="submitBtn" class="btn-submit">HANTAR BORANG SEKARANG</button>
+        <button type="submit" id="submitBtn" class="btn-submit">HANTAR PENDAFTARAN SEKARANG</button>
     </form>
+</div>
 
-    <div class="footer-signature">SISTEM DIBANGUNKAN OLEH <span class="dev-name">NISKALA PAWAKA</span></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<div style="position: absolute; top: -9999px; left: -9999px; width: 800px; background: white;">
+    <div id="resitKandungan" style="padding: 40px; font-family: Arial, sans-serif; color: #333;">
+        <div style="text-align: center; border-bottom: 3px solid #16a085; padding-bottom: 20px; margin-bottom: 20px;">
+            <h1 style="margin: 0; font-size: 28px; color: #2c3e50;">MASJID KAMPUNG SUNGAI LANG BARU</h1>
+            <p style="margin: 5px 0; font-size: 16px;">Jalan Berlian, Kampung Sungai Lang Baru, 42700 Banting, Selangor</p>
+            <h2 id="tajuk_dokumen" style="margin: 15px 0 0 0; background: #ecf0f1; padding: 10px; border-radius: 5px; color: #2980b9;">
+                RESIT PENDAFTARAN QURBAN 2026
+            </h2>
+        </div>
+        
+        <table style="width: 100%; font-size: 18px; margin-bottom: 30px;">
+            <tr><td style="padding: 10px 0; width: 35%;"><strong>Nama Pendaftar</strong></td><td>: <span id="r_nama"></span></td></tr>
+            <tr><td style="padding: 10px 0;"><strong>No. K/P</strong></td><td>: <span id="r_ic"></span></td></tr>
+            <tr><td style="padding: 10px 0;"><strong>Tarikh / Masa</strong></td><td>: <span id="r_tarikh"></span></td></tr>
+            <tr><td style="padding: 10px 0;"><strong>Kaedah Bayaran</strong></td><td>: <span id="r_kaedah"></span></td></tr>
+        </table>
+
+        <div style="background: #fdfbfb; border: 2px dashed #bdc3c7; padding: 20px; border-radius: 8px; text-align: center;">
+            <p style="margin: 0 0 10px 0; font-size: 18px;">Jumlah Keseluruhan:</p>
+            <h1 style="margin: 0; font-size: 36px; color: #27ae60;">RM <span id="r_jumlah"></span></h1>
+        </div>
+        
+        <div style="margin-top: 60px; text-align: center; font-size: 14px; color: #7f8c8d;">
+            <p>Alhamdulillah. Pendaftaran anda telah direkodkan ke dalam pangkalan data kami.</p>
+            <p><em>Ini adalah dokumen janaan komputer. Tiada tandatangan diperlukan.</em></p>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
