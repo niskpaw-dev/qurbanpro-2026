@@ -130,36 +130,36 @@ if(form) {
         const kaedah_bayar = document.getElementById('kaedah_bayar').value;
         const nama = document.getElementById('nama').value;
         
-        // Tangkap Senarai Peserta Qurban
-        let namaPeserta = [];
-        pesertaInputs.forEach(input => {
-            if (input.value.trim() !== "") {
-                namaPeserta.push(input.value.trim());
-            }
-        });
-        let senaraiPesertaQurban = namaPeserta.join(", "); // Contoh output: Ali, Abu, Ahmad
-
         // Tangkap Status Kehadiran & Nama Wakil
         let kehadiranElemen = document.querySelector('input[name="kehadiran"]:checked');
         let kehadiran = kehadiranElemen ? kehadiranElemen.value : "";
         let namaWakil = kehadiran === "Wakil" ? document.getElementById('nama_wakil').value : "Tiada";
         
-        // Himpunkan semua data dalam satu objek
+        // Himpunkan semua data dalam satu objek untuk dihantar ke Google Sheets
         const dataForm = {
             nama: nama,
             ic: document.getElementById('ic').value,
             telefon: document.getElementById('telefon').value,
             alamat: document.getElementById('alamat').value,
-            peserta_qurban: senaraiPesertaQurban, // Data Baharu
+            
+            // --- 7 DATA PESERTA BERASINGAN ---
+            peserta_1: document.querySelector('input[name="peserta_1"]').value,
+            peserta_2: document.querySelector('input[name="peserta_2"]').value,
+            peserta_3: document.querySelector('input[name="peserta_3"]').value,
+            peserta_4: document.querySelector('input[name="peserta_4"]').value,
+            peserta_5: document.querySelector('input[name="peserta_5"]').value,
+            peserta_6: document.querySelector('input[name="peserta_6"]').value,
+            peserta_7: document.querySelector('input[name="peserta_7"]').value,
+
             agihan: document.querySelector('input[name="agihan"]:checked').value,
             kaedah_bayar: kaedah_bayar,
             jumlah: jumlahBayarInput.value,
-            kehadiran: kehadiran,                 // Data Baharu
-            nama_wakil: namaWakil                 // Data Baharu
+            kehadiran: kehadiran,                 
+            nama_wakil: namaWakil                 
         };
 
         // 3. Hantar Data ke Apps Script
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyTlC6Fs56O_G4xvCKj_WoANeMSZfsOlZRm5n9--4qhA0WKqXG8l1-FOLYRP9j9RDIc/exec'; 
+        const scriptURL = https://script.google.com/macros/s/AKfycbyTlC6Fs56O_G4xvCKj_WoANeMSZfsOlZRm5n9--4qhA0WKqXG8l1-FOLYRP9j9RDIc/exec; 
 
         fetch(scriptURL, {
             method: 'POST',
