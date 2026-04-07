@@ -1,176 +1,103 @@
-<!DOCTYPE html>
-<html lang="ms">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Qurban 2026 - Masjid Kampung Sungai Lang Baru</title>
-    
-    <!-- Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+:root {
+    --neon-green: #00ff88;
+    --neon-green-dim: rgba(0, 255, 136, 0.2);
+    --dark-bg: #050b0a;
+    --panel-bg: rgba(6, 20, 15, 0.65);
+    --border-color: rgba(0, 255, 136, 0.3);
+    --text-main: #e2f1ec;
+    --text-muted: #8ab4a5;
+}
 
-<!-- ==========================================
-     HIDDEN PREMIUM PDF TEMPLATE
-     ========================================== -->
-<div style="position: absolute; top: -9999px; left: -9999px;">
-    <div id="resitKandungan" style="width: 700px; padding: 50px; background: #ffffff; font-family: 'Arial', sans-serif; position: relative; border: 15px solid #062a1f; color: #333;">
-        
-        <!-- Watermark -->
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.05; width: 400px; pointer-events: none;">
-            <img src="https://arleta.site/interactivelink/1610/LOGO-MKSLB.png" style="width: 100%;">
-        </div>
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background: radial-gradient(circle at 50% 0%, #062a1f 0%, var(--dark-bg) 100%);
+    background-attachment: fixed;
+    color: var(--text-main);
+    line-height: 1.6;
+    margin: 0; padding: 40px 15px;
+}
 
-        <!-- Header -->
-        <div style="text-align: center; border-bottom: 2px solid #00ff88; padding-bottom: 20px;">
-            <img src="https://arleta.site/interactivelink/1610/LOGO-MKSLB.png" style="width: 90px; height: 90px; margin-bottom: 10px;">
-            <h1 style="margin: 0; font-size: 26px; color: #062a1f; text-transform: uppercase;">MASJID KAMPUNG SUNGAI LANG BARU</h1>
-            <p style="margin: 5px 0; font-size: 14px; color: #666;">Jalan Berlian, Kampung Sungai Lang Baru, 42700 Banting, Selangor</p>
-        </div>
+.container {
+    max-width: 850px; margin: 0 auto;
+    background: var(--panel-bg);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    padding: 40px; border-radius: 12px;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+    position: relative; overflow: hidden;
+}
 
-        <!-- Title -->
-        <div style="margin: 30px 0; text-align: center;">
-            <h2 id="tajuk_dokumen" style="display: inline-block; padding: 8px 30px; background: #062a1f; color: #00ff88; border-radius: 50px; font-size: 18px; text-transform: uppercase;">RESIT PENDAFTARAN RASMI</h2>
-        </div>
+/* Kesan Scanline Bergerak */
+.container::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+    animation: scanline 4s linear infinite; opacity: 0.3;
+}
+@keyframes scanline { 0% { top: 0; } 100% { top: 100%; } }
 
-        <!-- Info Grid -->
-        <div style="display: flex; justify-content: space-between; margin-bottom: 30px; gap: 20px;">
-            <div style="flex: 1; padding: 15px; background: #f9f9f9; border-left: 5px solid #00ff88;">
-                <p style="margin: 0; font-size: 12px; color: #999;">NAMA PEWAKIL (PENDAFTAR)</p>
-                <strong id="r_nama" style="font-size: 18px; color: #062a1f;">-</strong><br>
-                <span id="r_ic" style="font-size: 14px;">-</span>
-            </div>
-            <div style="flex: 1; padding: 15px; background: #f9f9f9; border-left: 5px solid #00ff88; text-align: right;">
-                <p style="margin: 0; font-size: 12px; color: #999;">TARIKH & MOD BAYARAN</p>
-                <strong id="r_tarikh" style="font-size: 14px;">-</strong><br>
-                <span id="r_kaedah" style="font-size: 14px; font-weight: bold; color: #062a1f;">-</span>
-            </div>
-        </div>
+/* Header Layout */
+.header-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+.header-spacer { flex: 1; }
+.header-text { flex: 3; text-align: center; }
+.header-text h1 { color: var(--neon-green); margin-bottom: 5px; font-size: 32px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px var(--neon-green-dim); }
+.header-logo-container { flex: 1; display: flex; justify-content: flex-end; }
+.logo-masjid { width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--neon-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); background: white; }
 
-        <!-- Amount Box -->
-        <div style="background: linear-gradient(135deg, #062a1f 0%, #0a4d3a 100%); padding: 25px; border-radius: 12px; color: white; text-align: center;">
-            <p style="margin: 0; font-size: 16px; opacity: 0.8; letter-spacing: 1px;">JUMLAH SUMBANGAN QURBAN</p>
-            <h1 style="margin: 5px 0 0 0; font-size: 48px; color: #00ff88;">RM <span id="r_jumlah">0.00</span></h1>
-        </div>
+/* Live Counter Box dengan Kesan Radar */
+.live-counter-box { 
+    text-align: center; background: rgba(0, 0, 0, 0.4); 
+    border: 1px solid var(--neon-green); border-radius: 8px; 
+    padding: 25px 20px; margin-bottom: 35px; position: relative; overflow: hidden; 
+}
+.live-counter-box::after { 
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; 
+    background: conic-gradient(transparent, rgba(0, 255, 136, 0.15), transparent 30%); 
+    animation: rotateRadar 4s linear infinite; pointer-events: none; 
+}
+@keyframes rotateRadar { 100% { transform: rotate(360deg); } }
 
-        <!-- Footer Note -->
-        <div style="margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 20px; text-align: center; font-style: italic; color: #888; font-size: 13px;">
-            <p>“Alhamdulillah, penyertaan anda telah direkodkan. Semoga ibadah ini diterima Allah SWT.”</p>
-            <p style="margin-top: 15px;">SISTEM QURBANPRO 2026 - DOKUMEN JANAAN KOMPUTER RASMI</p>
-        </div>
-    </div>
-</div>
+.stats-container { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+.counter-display { display: inline-block; padding: 10px 30px; background: rgba(0, 255, 136, 0.05); border-bottom: 2px solid var(--neon-green); }
+.counter-number { font-size: 55px; font-weight: 700; color: var(--neon-green); text-shadow: 0 0 25px var(--neon-green); line-height: 1; }
+.counter-label { color: var(--text-main); font-size: 15px; letter-spacing: 2px; margin-top: 10px; }
 
-<!-- ==========================================
-     MAIN UI
-     ========================================== -->
-<div class="container">
-    <div class="header-title">
-        <div class="header-spacer"></div>
-        <div class="header-text">
-            <h1>SISTEM QURBANPRO 2026</h1>
-            <p>MASJID KAMPUNG SUNGAI LANG BARU</p>
-        </div>
-        <div class="header-logo-container">
-            <img src="https://arleta.site/interactivelink/1610/LOGO-MKSLB.png" alt="Logo Masjid" class="logo-masjid">
-        </div>
-    </div>
+/* Baki Box (Warna Merah/Pink) */
+.baki-box { border-bottom: 2px solid #ff3366; background: rgba(255, 51, 102, 0.05); }
+.baki-num { color: #ff3366; text-shadow: 0 0 25px #ff3366; }
 
-    <div class="deadline-banner" id="deadlineBanner">
-        <h4 style="margin: 0; color: #ff4444;">⚠️ TARIKH TUTUP PENYERTAAN: 24 MEI 2026</h4>
-        <div id="countdownTimer" style="font-weight: bold; margin-top: 5px;">Memuatkan data masa...</div>
-    </div>
+.section-title { 
+    background: linear-gradient(90deg, var(--neon-green-dim) 0%, transparent 100%); 
+    color: var(--neon-green); padding: 10px 20px; border-left: 4px solid var(--neon-green); 
+    font-weight: 600; margin-top: 35px; margin-bottom: 25px; text-transform: uppercase; 
+}
 
-    <div class="live-counter-box">
-        <h3 class="counter-title">STATISTIK QURBAN SEMASA</h3>
-        <div class="stats-container">
-            <div class="stat-item">
-                <div class="counter-display">
-                    <span id="liveCounterText" class="counter-number">0</span>
-                </div>
-                <p class="counter-label">PESERTA TERKUMPUL</p>
-            </div>
-            <div class="stat-item">
-                <div class="counter-display baki-box">
-                    <span id="bakiSlotText" class="counter-number baki-num">7</span>
-                </div>
-                <p class="counter-label baki-label">BAKI SLOT SEMASA</p>
-            </div>
-        </div>
-    </div>
-    
-    <form id="qurbanForm">
-        <div class="section-title">A. MAKLUMAT PEWAKIL</div>
-        <div class="form-row">
-            <div class="form-group"><label>[ DATA ] NAMA PENUH :</label><input type="text" id="nama" name="nama" required placeholder="NAMA PENUH ANDA"></div>
-            <div class="form-group"><label>[ DATA ] NO. KAD PENGENALAN :</label><input type="text" id="ic" name="ic" required placeholder="000000-00-0000"></div>
-        </div>
-        <div class="form-row">
-            <div class="form-group"><label>[ DATA ] NO. TELEFON :</label><input type="tel" id="telefon" name="telefon" required placeholder="01X-XXXXXXX"></div>
-            <div class="form-group"><label>[ DATA ] ALAMAT LENGKAP :</label><input type="text" id="alamat" name="alamat" required placeholder="ALAMAT TERKINI"></div>
-        </div>
+/* Form Styling */
+.form-row { display: flex; gap: 20px; margin-bottom: 20px; }
+.form-group { flex: 1; }
+label { display: block; color: var(--text-muted); font-size: 14px; margin-bottom: 8px; }
+input, select { 
+    width: 100%; padding: 14px; background: rgba(0, 0, 0, 0.4); 
+    border: 1px solid var(--border-color); color: var(--neon-green); 
+    border-radius: 6px; font-family: 'Rajdhani'; font-size: 16px; 
+}
+input:focus { outline: none; border-color: var(--neon-green); background: rgba(0, 255, 136, 0.05); }
 
-        <div class="section-title">B. LAFAZ AKAD & SENARAI PESERTA</div>
-        <div class="akad-box">"Adalah dengan ini saya mewakilkan kepada pihak Masjid Kampung Sungai Lang Baru untuk membeli dan melaksanakan ibadah Qurban bagi pihak saya / penama yang didaftarkan seperti berikut:"</div>
+/* Table Styling */
+table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: rgba(0, 0, 0, 0.3); }
+th, td { border: 1px solid rgba(0, 255, 136, 0.15); padding: 12px; }
+th { color: var(--neon-green); text-transform: uppercase; background: rgba(0, 255, 136, 0.1); }
+.num-col { text-align: center; color: var(--text-muted); font-weight: bold; width: 40px; }
+.peserta-input { border: none !important; background: transparent !important; }
 
-        <table>
-            <thead><tr><th class="num-col">ID</th><th>NAMA PESERTA (RM 900.00 / BAHAGIAN)</th></tr></thead>
-            <tbody>
-                <tr><td class="num-col">01</td><td><input type="text" name="peserta_1" class="peserta-input" placeholder="[ INPUT NAMA ]" required></td></tr>
-                <tr><td class="num-col">02</td><td><input type="text" name="peserta_2" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">03</td><td><input type="text" name="peserta_3" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">04</td><td><input type="text" name="peserta_4" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">05</td><td><input type="text" name="peserta_5" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">06</td><td><input type="text" name="peserta_6" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-                <tr><td class="num-col">07</td><td><input type="text" name="peserta_7" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
-            </tbody>
-        </table>
-        <div class="price-note"><span>*HARGA ANGGARAN RM 900.00</span><span style="color: var(--neon-green);">[ PENGIRAAN AUTOMATIK AKTIF ]</span></div>
+/* Buttons */
+.btn-submit { 
+    width: 100%; padding: 18px; background: transparent; border: 1px solid var(--neon-green); 
+    color: var(--neon-green); font-size: 22px; font-weight: 700; cursor: pointer; 
+    text-transform: uppercase; letter-spacing: 3px; transition: 0.3s; margin-top: 30px; 
+}
+.btn-submit:hover { background: var(--neon-green); color: var(--dark-bg); box-shadow: 0 0 25px var(--neon-green); }
 
-        <div class="section-title">C. PILIHAN AGIHAN</div>
-        <div class="radio-group">
-            <div class="radio-option"><input type="radio" id="agihan1" name="agihan" value="Sedekah Semua" required><label for="agihan1">MENYERAHKAN KESELURUHAN BAHAGIAN KEPADA PIHAK MASJID.</label></div>
-            <div class="radio-option"><input type="radio" id="agihan2" name="agihan" value="Ambil Sebahagian"><label for="agihan2">MENGHENDAKI SEBAHAGIAN (3KG DAGING, TULANG & ORGAN).</label></div>
-        </div>
+.bank-info { display: none; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--neon-green); padding: 20px; border-radius: 6px; margin-top: 15px; animation: fadeIn 0.4s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        <div class="section-title">D. STATUS PEMBAYARAN</div>
-        <div class="form-group"><label>JUMLAH KESELURUHAN (RM) :</label><input type="number" id="jumlah_bayar" name="jumlah_bayar" required readonly style="background: rgba(0,255,136,0.1); font-weight: bold; color: var(--neon-green); font-size: 22px; text-align: center;"></div>
-        <div class="form-group">
-            <label>MOD PEMBAYARAN :</label>
-            <select id="kaedah_bayar" name="kaedah_bayar" required>
-                <option value="">-- PILIH MOD --</option>
-                <option value="Tunai">WANG TUNAI (SERAH AJK)</option>
-                <option value="Online Transfer">PEMINDAHAN DALAM TALIAN</option>
-                <option value="ToyyibPay">TOYYIBPAY (PAYMENT GATEWAY)</option>
-            </select>
-        </div>
-
-        <div id="bank_info" class="bank-info">
-            <h4>[ MAKLUMAT AKAUN ]</h4>
-            <div class="bank-details">
-                <p><strong>NAMA AKAUN :</strong> Masjid Kampung Sungai Lang Baru</p>
-                <p><strong>NO. AKAUN :</strong> <span style="color: var(--neon-green); font-weight: bold; letter-spacing: 1px;">1207 4010 0317 14</span></p>
-                <p><strong>BANK :</strong> Bank Islam Malaysia Berhad</p>
-            </div>
-        </div>
-
-        <div class="section-title">E. KOMITMEN KEHADIRAN</div>
-        <div class="radio-group">
-            <div class="radio-option"><input type="radio" id="hadir1" name="kehadiran" value="Hadir" required><label for="hadir1">SAYA AKAN HADIR</label></div>
-            <div class="radio-option"><input type="radio" id="hadir2" name="kehadiran" value="Wakil"><label for="hadir2">MENGHANTAR WAKIL</label></div>
-        </div>
-        <div class="form-group" id="box_wakil"><label>[ DATA ] NAMA WAKIL :</label><input type="text" id="nama_wakil" name="nama_wakil" placeholder="NAMA WAKIL ANDA"></div>
-
-        <button type="submit" id="submitBtn" class="btn-submit">HANTAR BORANG SEKARANG</button>
-    </form>
-
-    <div class="footer-signature">SISTEM DIBANGUNKAN OLEH <span class="dev-name">NISKALA PAWAKA</span></div>
-</div>
-
-<script src="script.js"></script>
-
-</body>
-</html>
+@media (max-width: 600px) { .form-row { flex-direction: column; } .header-title { flex-direction: column-reverse; gap: 20px; } }
