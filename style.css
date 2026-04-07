@@ -1,91 +1,255 @@
+/* =====================================================================
+   SISTEM QURBANPRO 2026 - MASTER CSS FILE (PREMIUM MODERN ISLAMIC BUILD)
+   ===================================================================== */
+
+/* 1. VARIABEL WARNA (Cyber Islamic Theme) */
 :root {
-    --neon-green: #00ff88;
-    --neon-green-dim: rgba(0, 255, 136, 0.2);
-    --dark-bg: #050b0a;
-    --panel-bg: rgba(6, 20, 15, 0.8);
-    --border-color: rgba(0, 255, 136, 0.3);
-    --text-main: #e2f1ec;
-    --text-muted: #8ab4a5;
+    --bg-dark: #0a1120;              /* Deep Teal Black */
+    --card-bg: rgba(26, 43, 76, 0.7); /* Translucent Card - Glassmorphism */
+    --cyber-teal: #16a085;           /* Premium Teal */
+    --cyber-green: #27ae60;          /* Soft Neon Green */
+    --cyber-gold: #f39c12;           /* Soft Pulsating Gold */
+    --text-primary: #ecf0f1;         /* Crisp White */
+    --text-secondary: #bdc3c7;       /* Soft Grey */
+    --border-cyber: 2px solid #16a085; /* Glowing Teal Border */
 }
 
+/* 2. GAYA ASAS BODY (Deep Mosque Background) */
 body {
-    font-family: 'Rajdhani', sans-serif;
-    background: radial-gradient(circle at 50% 0%, #062a1f 0%, var(--dark-bg) 100%);
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', 'Inter', sans-serif; /* Modern, Crisp Fonts */
+    background-color: var(--bg-dark);
+    /* Latar belakang Masjid yang gelap, kabur (blurred) & eksklusif */
+    background-image: linear-gradient(rgba(10, 17, 32, 0.9), rgba(10, 17, 32, 0.9)), url('https://w0.peakpx.com/wallpaper/583/604/HD-wallpaper-dark-mosque-background.jpg');
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
-    color: var(--text-main);
-    margin: 0; padding: 40px 15px;
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
+/* 3. KONTAINER UTAMA (Glassmorphism Card) */
 .container {
-    max-width: 850px; margin: 0 auto;
-    background: var(--panel-bg);
-    backdrop-filter: blur(15px);
-    border: 1px solid var(--border-color);
-    padding: 40px; border-radius: 15px;
-    position: relative; overflow: hidden;
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 40px;
+    background: var(--card-bg);
+    /* Kesan lutsinar (translucent) dengan pantulan cahaya */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
 }
 
-.container::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
-    animation: scan 3s linear infinite;
+/* 4. TAJUK UTAMA (Premium Advanced Font) */
+h1 {
+    font-size: 36px;
+    text-align: center;
+    margin: 0 0 10px 0;
+    color: var(--text-primary);
+    letter-spacing: 2px;
+    font-weight: 800;
 }
 
-@keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(1000px); opacity: 0; } }
-
-.header-title { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 30px; }
-.header-text h1 { color: var(--neon-green); font-size: 30px; margin: 0; letter-spacing: 3px; text-shadow: 0 0 10px var(--neon-green); }
-.logo-masjid { width: 80px; height: 80px; border: 2px solid var(--neon-green); border-radius: 50%; background: white; animation: pulse 2s infinite; }
-
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(0, 255, 136, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); } }
-
-.deadline-banner { background: rgba(255, 0, 0, 0.1); border: 1px dashed red; text-align: center; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
-
-.live-counter-box {
-    background: rgba(0,0,0,0.5); border: 1px solid var(--neon-green);
-    padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 30px;
-    position: relative; overflow: hidden;
+h2 {
+    font-size: 18px;
+    text-align: center;
+    margin: 0 0 30px 0;
+    color: var(--text-secondary);
+    font-weight: 400;
+    letter-spacing: 1px;
 }
 
-.live-counter-box::after {
-    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
-    animation: shine 4s infinite;
+/* 5. KOTAK STATISTIK LIVE (Elevated Dashboard) */
+.stats-box {
+    background: linear-gradient(135deg, rgba(22, 160, 133, 0.2), rgba(39, 174, 96, 0.1));
+    padding: 20px;
+    border-radius: 10px;
+    border: var(--border-cyber);
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(22, 160, 133, 0.4);
+    position: relative;
 }
 
-@keyframes shine { 0% { left: -100%; } 100% { left: 200%; } }
-
-.stats-container { display: flex; justify-content: space-around; gap: 20px; }
-.counter-number { font-size: 50px; font-weight: 700; color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); }
-.baki-num { color: #ff3366; text-shadow: 0 0 15px #ff3366; }
-
-.section-title { background: linear-gradient(90deg, var(--neon-green-dim), transparent); color: var(--neon-green); padding: 10px; border-left: 5px solid var(--neon-green); margin: 30px 0 20px; text-transform: uppercase; }
-
-.form-row { display: flex; gap: 20px; }
-.form-group { flex: 1; margin-bottom: 20px; }
-label { display: block; color: var(--text-muted); margin-bottom: 5px; font-size: 14px; }
-
-input, select {
-    width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color);
-    color: var(--neon-green); font-family: 'Rajdhani'; border-radius: 5px;
+/* Logik Jam Undur Berdegup Emas */
+#countdownTimer {
+    color: var(--cyber-gold);
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(243, 156, 18, 0.8);
+    animation: pulse-gold 1.5s infinite;
 }
 
-input:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green-dim); }
+@keyframes pulse-gold {
+    0% { transform: scale(1); text-shadow: 0 0 5px rgba(243, 156, 18, 0.5); }
+    50% { transform: scale(1.05); text-shadow: 0 0 20px rgba(243, 156, 18, 1); }
+    100% { transform: scale(1); text-shadow: 0 0 5px rgba(243, 156, 18, 0.5); }
+}
 
-.akad-box { border: 1px dashed var(--neon-green); padding: 20px; text-align: center; color: var(--neon-green); font-style: italic; margin-bottom: 20px; }
+.stats-text {
+    margin: 15px 0 0 0;
+    font-size: 18px;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+}
 
-table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); }
-th, td { border: 1px solid var(--border-color); padding: 10px; }
-.num-col { width: 40px; text-align: center; color: var(--neon-green); }
+.counter-value {
+    color: var(--cyber-green);
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(39, 174, 96, 0.8);
+}
 
+/* 6. SUSUNAN BORANG (Elegant Cards for Sections A, B, C) */
+fieldset {
+    border: none;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border-left: 5px solid var(--cyber-teal);
+    transition: all 0.3s ease;
+}
+
+fieldset:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+legend {
+    font-weight: bold;
+    color: var(--cyber-teal);
+    padding: 0 10px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+legend i {
+    font-size: 16px;
+    color: var(--cyber-green);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* 7. KOTAK INPUT (Glowing Focus Interaction) */
+input[type="text"], input[type="email"], input[type="number"], select {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: rgba(10, 17, 32, 0.5);
+    border: 2px solid rgba(22, 160, 133, 0.3);
+    border-radius: 5px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--cyber-green);
+    background-color: rgba(10, 17, 32, 0.8);
+    box-shadow: 0 0 15px rgba(39, 174, 96, 0.4);
+}
+
+input[readonly] {
+    background-color: rgba(39, 174, 96, 0.05);
+    border-color: var(--cyber-green);
+    color: var(--cyber-green);
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Peserta inputs (khusus untuk Bahagian B) */
+.peserta-input {
+    background-color: rgba(22, 160, 133, 0.05);
+    border-color: rgba(22, 160, 133, 0.5);
+}
+
+/* 8. BUTANG HANTAR (Gradient Teal-Gold, Mosque Glowing Effect) */
 .btn-submit {
-    width: 100%; padding: 20px; background: transparent; border: 1px solid var(--neon-green);
-    color: var(--neon-green); font-size: 20px; font-weight: 700; cursor: pointer;
-    text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+    width: 100%;
+    padding: 18px;
+    margin-top: 30px;
+    background: linear-gradient(135deg, var(--cyber-teal), var(--cyber-green));
+    color: var(--bg-dark); /* Dark text on bright button */
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 15px rgba(22, 160, 133, 0.4);
+    position: relative;
+    overflow: hidden;
 }
 
-.btn-submit:hover { background: var(--neon-green); color: black; box-shadow: 0 0 30px var(--neon-green); }
+.btn-submit:hover {
+    box-shadow: 0 0 25px rgba(39, 174, 96, 0.7);
+    transform: translateY(-3px);
+}
 
-.bank-info { display: none; padding: 15px; border: 1px solid var(--neon-green); margin-top: 10px; background: rgba(0,255,136,0.05); }
+/* Kesan cahaya masjid (glow) pada butang */
+.btn-submit:after {
+    content: '';
+    position: absolute;
+    top: -50%; right: -50%; bottom: -50%; left: -50%;
+    background: linear-gradient(to bottom, rgba(22, 160, 133, 0), rgba(39, 174, 96, 0.5), rgba(22, 160, 133, 0));
+    transform: rotateZ(60deg) translate(-5em, 7.5em);
+}
 
-@media (max-width: 600px) { .form-row { flex-direction: column; gap: 0; } }
+.btn-submit:hover:after {
+    animation: sheen 1s forwards;
+}
+
+@keyframes sheen {
+    100% { transform: rotateZ(60deg) translate(1em, -9em); }
+}
+
+/* 9. PAPARAN RESIT PDF (Hidden Receipt - White Card with Gold Accents) */
+#resitKandungan {
+    background: #ffffff; /* Clean White for Receipt */
+    color: #333333;
+}
+
+#tajuk_dokumen {
+    background: #fdfbfb;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    color: var(--cyber-teal);
+    padding: 10px;
+    margin: 15px 0;
+}
+
+.total-summary {
+    background: #fffef2; /* Soft Gold Tint for Total */
+    border: 2px dashed var(--cyber-gold);
+    color: var(--cyber-green);
+    text-shadow: none;
+}
