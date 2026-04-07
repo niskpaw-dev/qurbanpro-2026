@@ -5,43 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Qurban 2026 - Masjid Kampung Sungai Lang Baru</title>
     
+    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
 </head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<body>
 
-<div style="position: absolute; top: -9999px; left: -9999px; width: 800px; background: white;">
-    <div id="resitKandungan" style="padding: 40px; font-family: Arial, sans-serif; color: #333;">
-        <div style="text-align: center; border-bottom: 3px solid #16a085; padding-bottom: 20px; margin-bottom: 20px;">
-            <h1 style="margin: 0; font-size: 28px; color: #2c3e50;">MASJID KAMPUNG SUNGAI LANG BARU</h1>
-            <p style="margin: 5px 0; font-size: 16px;">Jalan Berlian, Kampung Sungai Lang Baru, 42700 Banting, Selangor</p>
-            <h2 id="tajuk_dokumen" style="margin: 15px 0 0 0; background: #ecf0f1; padding: 10px; border-radius: 5px; color: #2980b9;">
-                RESIT PENDAFTARAN QURBAN 2026
-            </h2>
-        </div>
+<!-- ==========================================
+     HIDDEN PREMIUM PDF TEMPLATE
+     ========================================== -->
+<div style="position: absolute; top: -9999px; left: -9999px;">
+    <div id="resitKandungan" style="width: 700px; padding: 50px; background: #ffffff; font-family: 'Arial', sans-serif; position: relative; border: 15px solid #062a1f; color: #333;">
         
-        <table style="width: 100%; font-size: 18px; margin-bottom: 30px;">
-            <tr><td style="padding: 10px 0; width: 35%;"><strong>Nama Pendaftar</strong></td><td>: <span id="r_nama"></span></td></tr>
-            <tr><td style="padding: 10px 0;"><strong>No. K/P</strong></td><td>: <span id="r_ic"></span></td></tr>
-            <tr><td style="padding: 10px 0;"><strong>Tarikh / Masa</strong></td><td>: <span id="r_tarikh"></span></td></tr>
-            <tr><td style="padding: 10px 0;"><strong>Kaedah Bayaran</strong></td><td>: <span id="r_kaedah"></span></td></tr>
-        </table>
+        <!-- Watermark -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.05; width: 400px; pointer-events: none;">
+            <img src="https://arleta.site/interactivelink/1610/LOGO-MKSLB.png" style="width: 100%;">
+        </div>
 
-        <div style="background: #fdfbfb; border: 2px dashed #bdc3c7; padding: 20px; border-radius: 8px; text-align: center;">
-            <p style="margin: 0 0 10px 0; font-size: 18px;">Jumlah Keseluruhan:</p>
-            <h1 style="margin: 0; font-size: 36px; color: #27ae60;">RM <span id="r_jumlah"></span></h1>
+        <!-- Header -->
+        <div style="text-align: center; border-bottom: 2px solid #00ff88; padding-bottom: 20px;">
+            <img src="https://arleta.site/interactivelink/1610/LOGO-MKSLB.png" style="width: 90px; height: 90px; margin-bottom: 10px;">
+            <h1 style="margin: 0; font-size: 26px; color: #062a1f; text-transform: uppercase;">MASJID KAMPUNG SUNGAI LANG BARU</h1>
+            <p style="margin: 5px 0; font-size: 14px; color: #666;">Jalan Berlian, Kampung Sungai Lang Baru, 42700 Banting, Selangor</p>
         </div>
-        
-        <div style="margin-top: 60px; text-align: center; font-size: 14px; color: #7f8c8d;">
-            <p>Alhamdulillah. Pendaftaran anda telah direkodkan ke dalam pangkalan data kami.</p>
-            <p><em>Ini adalah dokumen janaan komputer. Tiada tandatangan diperlukan.</em></p>
+
+        <!-- Title -->
+        <div style="margin: 30px 0; text-align: center;">
+            <h2 id="tajuk_dokumen" style="display: inline-block; padding: 8px 30px; background: #062a1f; color: #00ff88; border-radius: 50px; font-size: 18px; text-transform: uppercase;">RESIT PENDAFTARAN RASMI</h2>
+        </div>
+
+        <!-- Info Grid -->
+        <div style="display: flex; justify-content: space-between; margin-bottom: 30px; gap: 20px;">
+            <div style="flex: 1; padding: 15px; background: #f9f9f9; border-left: 5px solid #00ff88;">
+                <p style="margin: 0; font-size: 12px; color: #999;">NAMA PEWAKIL (PENDAFTAR)</p>
+                <strong id="r_nama" style="font-size: 18px; color: #062a1f;">-</strong><br>
+                <span id="r_ic" style="font-size: 14px;">-</span>
+            </div>
+            <div style="flex: 1; padding: 15px; background: #f9f9f9; border-left: 5px solid #00ff88; text-align: right;">
+                <p style="margin: 0; font-size: 12px; color: #999;">TARIKH & MOD BAYARAN</p>
+                <strong id="r_tarikh" style="font-size: 14px;">-</strong><br>
+                <span id="r_kaedah" style="font-size: 14px; font-weight: bold; color: #062a1f;">-</span>
+            </div>
+        </div>
+
+        <!-- Amount Box -->
+        <div style="background: linear-gradient(135deg, #062a1f 0%, #0a4d3a 100%); padding: 25px; border-radius: 12px; color: white; text-align: center;">
+            <p style="margin: 0; font-size: 16px; opacity: 0.8; letter-spacing: 1px;">JUMLAH SUMBANGAN QURBAN</p>
+            <h1 style="margin: 5px 0 0 0; font-size: 48px; color: #00ff88;">RM <span id="r_jumlah">0.00</span></h1>
+        </div>
+
+        <!-- Footer Note -->
+        <div style="margin-top: 40px; border-top: 1px dashed #ccc; padding-top: 20px; text-align: center; font-style: italic; color: #888; font-size: 13px;">
+            <p>“Alhamdulillah, penyertaan anda telah direkodkan. Semoga ibadah ini diterima Allah SWT.”</p>
+            <p style="margin-top: 15px;">SISTEM QURBANPRO 2026 - DOKUMEN JANAAN KOMPUTER RASMI</p>
         </div>
     </div>
 </div>
-<body>
 
+<!-- ==========================================
+     MAIN UI
+     ========================================== -->
 <div class="container">
     <div class="header-title">
         <div class="header-spacer"></div>
@@ -56,12 +81,11 @@
 
     <div class="deadline-banner" id="deadlineBanner">
         <h4 style="margin: 0; color: #ff4444;">⚠️ TARIKH TUTUP PENYERTAAN: 24 MEI 2026</h4>
-        <div id="countdownTimer" style="font-weight: bold; margin-top: 5px;">Kira detik sedang dimuat...</div>
+        <div id="countdownTimer" style="font-weight: bold; margin-top: 5px;">Memuatkan data masa...</div>
     </div>
 
     <div class="live-counter-box">
         <h3 class="counter-title">STATISTIK QURBAN SEMASA</h3>
-        
         <div class="stats-container">
             <div class="stat-item">
                 <div class="counter-display">
@@ -69,12 +93,11 @@
                 </div>
                 <p class="counter-label">PESERTA TERKUMPUL</p>
             </div>
-            
             <div class="stat-item">
                 <div class="counter-display baki-box">
                     <span id="bakiSlotText" class="counter-number baki-num">7</span>
                 </div>
-                <p class="counter-label baki-label">BAKI SLOT BAHAGIAN SEMASA</p>
+                <p class="counter-label baki-label">BAKI SLOT SEMASA</p>
             </div>
         </div>
     </div>
@@ -82,19 +105,19 @@
     <form id="qurbanForm">
         <div class="section-title">A. MAKLUMAT PEWAKIL</div>
         <div class="form-row">
-            <div class="form-group"><label for="nama">[ DATA ] NAMA PENUH :</label><input type="text" id="nama" name="nama" required placeholder="NAMA PENUH ANDA"></div>
-            <div class="form-group"><label for="ic">[ DATA ] NO. KAD PENGENALAN :</label><input type="text" id="ic" name="ic" required placeholder="000000-00-0000"></div>
+            <div class="form-group"><label>[ DATA ] NAMA PENUH :</label><input type="text" id="nama" name="nama" required placeholder="NAMA PENUH ANDA"></div>
+            <div class="form-group"><label>[ DATA ] NO. KAD PENGENALAN :</label><input type="text" id="ic" name="ic" required placeholder="000000-00-0000"></div>
         </div>
         <div class="form-row">
-            <div class="form-group"><label for="telefon">[ DATA ] NO. TELEFON / WHATSAPP :</label><input type="tel" id="telefon" name="telefon" required placeholder="01X-XXXXXXX"></div>
-            <div class="form-group"><label for="alamat">[ DATA ] ALAMAT LENGKAP :</label><input type="text" id="alamat" name="alamat" required placeholder="ALAMAT TERKINI"></div>
+            <div class="form-group"><label>[ DATA ] NO. TELEFON :</label><input type="tel" id="telefon" name="telefon" required placeholder="01X-XXXXXXX"></div>
+            <div class="form-group"><label>[ DATA ] ALAMAT LENGKAP :</label><input type="text" id="alamat" name="alamat" required placeholder="ALAMAT TERKINI"></div>
         </div>
 
         <div class="section-title">B. LAFAZ AKAD & SENARAI PESERTA</div>
         <div class="akad-box">"Adalah dengan ini saya mewakilkan kepada pihak Masjid Kampung Sungai Lang Baru untuk membeli dan melaksanakan ibadah Qurban bagi pihak saya / penama yang didaftarkan seperti berikut:"</div>
 
         <table>
-            <thead><tr><th class="num-col">ID</th><th>NAMA PESERTA (1 BAHAGIAN = RM 900.00)</th></tr></thead>
+            <thead><tr><th class="num-col">ID</th><th>NAMA PESERTA (RM 900.00 / BAHAGIAN)</th></tr></thead>
             <tbody>
                 <tr><td class="num-col">01</td><td><input type="text" name="peserta_1" class="peserta-input" placeholder="[ INPUT NAMA ]" required></td></tr>
                 <tr><td class="num-col">02</td><td><input type="text" name="peserta_2" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
@@ -105,7 +128,7 @@
                 <tr><td class="num-col">07</td><td><input type="text" name="peserta_7" class="peserta-input" placeholder="[ INPUT NAMA PILIHAN ]"></td></tr>
             </tbody>
         </table>
-        <div class="price-note"><span>*HARGA ANGGARAN RM 900.00 / BAHAGIAN</span><span style="color: var(--neon-green);">[ PENGIRAAN AUTOMATIK AKTIF ]</span></div>
+        <div class="price-note"><span>*HARGA ANGGARAN RM 900.00</span><span style="color: var(--neon-green);">[ PENGIRAAN AUTOMATIK AKTIF ]</span></div>
 
         <div class="section-title">C. PILIHAN AGIHAN</div>
         <div class="radio-group">
@@ -114,14 +137,14 @@
         </div>
 
         <div class="section-title">D. STATUS PEMBAYARAN</div>
-        <div class="form-group"><label for="jumlah_bayar">JUMLAH KESELURUHAN (RM) :</label><input type="number" id="jumlah_bayar" name="jumlah_bayar" required placeholder="0" readonly style="background: rgba(0,255,136,0.1); font-weight: bold; color: var(--neon-green); cursor: not-allowed; font-size: 20px;"></div>
+        <div class="form-group"><label>JUMLAH KESELURUHAN (RM) :</label><input type="number" id="jumlah_bayar" name="jumlah_bayar" required readonly style="background: rgba(0,255,136,0.1); font-weight: bold; color: var(--neon-green); font-size: 22px; text-align: center;"></div>
         <div class="form-group">
-            <label for="kaedah_bayar">MOD PEMBAYARAN :</label>
+            <label>MOD PEMBAYARAN :</label>
             <select id="kaedah_bayar" name="kaedah_bayar" required>
                 <option value="">-- PILIH MOD --</option>
                 <option value="Tunai">WANG TUNAI (SERAH AJK)</option>
                 <option value="Online Transfer">PEMINDAHAN DALAM TALIAN</option>
-                <option value="ToyyibPay">PAYMENT GATEWAY (TOYYIBPAY)</option>
+                <option value="ToyyibPay">TOYYIBPAY (PAYMENT GATEWAY)</option>
             </select>
         </div>
 
@@ -139,7 +162,7 @@
             <div class="radio-option"><input type="radio" id="hadir1" name="kehadiran" value="Hadir" required><label for="hadir1">SAYA AKAN HADIR</label></div>
             <div class="radio-option"><input type="radio" id="hadir2" name="kehadiran" value="Wakil"><label for="hadir2">MENGHANTAR WAKIL</label></div>
         </div>
-        <div class="form-group" id="box_wakil"><label for="nama_wakil">[ DATA ] NAMA WAKIL :</label><input type="text" id="nama_wakil" name="nama_wakil" placeholder="INPUT NAMA WAKIL"></div>
+        <div class="form-group" id="box_wakil"><label>[ DATA ] NAMA WAKIL :</label><input type="text" id="nama_wakil" name="nama_wakil" placeholder="NAMA WAKIL ANDA"></div>
 
         <button type="submit" id="submitBtn" class="btn-submit">HANTAR BORANG SEKARANG</button>
     </form>
